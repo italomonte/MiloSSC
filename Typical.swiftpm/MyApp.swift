@@ -8,3 +8,14 @@ struct MyApp: App {
         }
     }
 }
+
+
+struct InitialMenu: View {
+    
+    @ObservedObject var coordinator: Coordinator = Coordinator()
+    
+    var body: some View {
+        CoordinatorView(coordinator: coordinator)
+
+    }
+}
