@@ -9,8 +9,9 @@ import SwiftUI
 
 struct CardBackView: View {
     
+    let geo: GeometryProxy
+    let widthPercent: CGFloat
     @State var isCorret: Bool = false
-    var width: CGFloat
 
     var body: some View {
         VStack{
@@ -22,13 +23,8 @@ struct CardBackView: View {
             Image("cardNumberBg")
                 .resizable()
                 .scaledToFit()
-                .frame(width: width)
+                .frame(width: geo.size.width * widthPercent)
 
         }
     }
-}
-
-
-#Preview {
-    CardBackView(isCorret: false, width: 100)
 }

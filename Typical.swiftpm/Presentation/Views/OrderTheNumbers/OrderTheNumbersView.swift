@@ -54,25 +54,24 @@ struct OrderTheNumbersView: View {
                             .font(.largeTitle)
                             .frame(maxWidth: 0.713 * geo.size.width)
                         
-                        LazyHStack(alignment: .bottom) {
+                        HStack(alignment: .bottom) {
                             ForEach(numbersCards, id: \.id) { item in
-                                CardBackView(isCorret: false, width: geo.size.width * 0.09)
+                                CardBackView(geo: geo, widthPercent: 0.089, isCorret: false)
                             }
                         }
-                        .frame(maxHeight: 0.76 * geo.size.height)
-                        
+                        .frame(maxWidth: 0.9472 * geo.size.width, maxHeight: 0.76 * geo.size.height)
                     }
                     
                     
-                    HStack(alignment: .bottom) {
+                    HStack(alignment: .bottom, spacing: 0.009 * geo.size.width) {
                         ForEach(numbersCards, id: \.id) { card in
-                            RowView(item: card, widthPercent: 0.09, isBeingDragged: draggedItem == card, geo: geo)
+                            RowView(geo: geo, widthPercent: 0.086, item: card, isBeingDragged: draggedItem == card)
                                 .offset(x: draggedItem == card ? offset : 0)
                                 .gesture(dragGesture(for: card)) // Detecta o arrastar
                             
                         }
                     }
-                    .frame(maxHeight: 0.76 * geo.size.height)
+                    .frame(maxWidth: 0.9472 * geo.size.width, maxHeight: 0.76 * geo.size.height)
                     .offset(y: 27)
                     
                     
@@ -135,7 +134,7 @@ struct OrderTheNumbersView: View {
             .onEnded { value in
                 if let draggedItem, let fromIndex = numbersCards.firstIndex(of: draggedItem) {
                     let offset = value.translation.width
-                    let toIndex = fromIndex + Int(offset / 150) // Define a nova posição baseado na altura arrastada
+                    let toIndex = fromIndex + Int(offset / 110) // Define a nova posição baseado na altura arrastada
                     
                     let validIndex = max(0, min(numbersCards.count - 1, toIndex)) // Garante que o índice esteja dentro dos limites
                     moveItem(from: fromIndex, to: validIndex)
@@ -149,11 +148,11 @@ struct OrderTheNumbersView: View {
 // MARK: - Item da Lista
 struct RowView: View {
     
-    var item: NumberCard
-    var widthPercent: CGFloat
-    var isBeingDragged: Bool
     let geo: GeometryProxy
-    
+    var widthPercent: CGFloat
+    var item: NumberCard
+    var isBeingDragged: Bool
+
     var body: some View {
         VStack {
             Image("cardNumber" + String(item.id))
