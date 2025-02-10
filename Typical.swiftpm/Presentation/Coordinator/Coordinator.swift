@@ -61,7 +61,8 @@ class Coordinator: ObservableObject {
             case .MinigamesView: MinigamesView()
             
             // Minigames
-            case .OrderTheNumbersView: OrderTheNumbersView()
+            case .OrderTheNumbersView: OrderNumbersView()
+            case .ExploringTheAlphabet: ExploringAlphabetView()
 
             }
         }

@@ -8,13 +8,24 @@
 import SwiftUI
 
 struct MinigamesView: View {
+    
+    @EnvironmentObject var coordinator: Coordinator
+    
     var body: some View {
         VStack{
-            NavigationLink {
-                OrderTheNumbersView()
+            
+            Button {
+                coordinator.push(page: .OrderTheNumbersView)
             } label: {
-                Text("OrderTheNumbersView")
+                Text("Order the number fluffies")
             }
+            
+            Button {
+                coordinator.push(page: .ExploringTheAlphabet)
+            } label: {
+                Text("Exploring the alphabet")
+            }
+
         }
     }
 }

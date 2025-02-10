@@ -17,25 +17,23 @@ struct InitialMenuView: View {
                     .ignoresSafeArea()
                 
                 VStack{
+                    
+                    // Header
                     HStack {
                         
-                        NavigationLink {
-                            InfoView()
+                        Button {
+                            coordinator.push(page: .InfoView)
                         } label: {}
                             .buttonStyle(PressableButtonStyle(normalImage: "InfoBtn", pressedImage: "InfoBtnPressed", width: 100))
                         
                         Spacer()
                         
-                        ZStack {
-                            ImagePressable(assets: ["SettingsBtn", "SettingsBtnPressed"], width: 100)
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
+                        
+                        Button {
                             isSettingOpen.toggle()
-                        }
-
-                            
-
+                        } label: {}
+                            .buttonStyle(PressableButtonStyle(normalImage: "SettingsBtn", pressedImage: "SettingsBtnPressed", width: 100))
+                        
                     }
                     .padding()
                     
@@ -48,7 +46,7 @@ struct InitialMenuView: View {
                     Spacer()
                     
                     Button {
-                        coordinator.push(page: .OrderTheNumbersView)
+                        coordinator.push(page: .MinigamesView)
                     } label: {}
                         .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: 150))
                         .padding(.bottom, 40)

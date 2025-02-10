@@ -11,11 +11,21 @@ struct CardBackView: View {
     
     let geo: GeometryProxy
     let widthPercent: CGFloat
-    @State var isCorret: Bool = false
+    @ObservedObject var orderNumbersVm: OrderNumbersViewModel
+    let card: NumberCard
 
+    
+    func isCorrectCardposition() -> Bool {
+        if orderNumbersVm.numbersCards[card.id].id == card.id {
+            return true
+        }
+        return false
+    }
+    
     var body: some View {
+    
         VStack{
-            Image(isCorret ? "correctIndicator" : "incorrectIndicator")
+            Image(isCorrectCardposition() ? "correctIndicator" : "incorrectIndicator")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 50)
