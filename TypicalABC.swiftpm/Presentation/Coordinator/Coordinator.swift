@@ -58,11 +58,12 @@ class Coordinator: ObservableObject {
                 
             // Minigames Menu
             case .CallToMinigames: CallToMinigamesView()
-            case .MinigamesView: MinigamesView()
+            case .MinigamesMenuView: MinigamesMenuView()
             
             // Minigames
             case .OrderTheNumbersView: OrderNumbersView()
             case .ExploringTheAlphabet: ExploringAlphabetView()
+            case .CountingAnimals: CountingAnimalsView()
 
             }
         }

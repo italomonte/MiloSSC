@@ -78,7 +78,7 @@ struct OrderNumbersView: View {
                         Spacer()
                         
                         Button {
-                            coordinator.push(page: .MinigamesView)
+                            coordinator.push(page: .MinigamesMenuView)
                         } label: {
                             Image("SettingsBtn")
                                 .resizable()

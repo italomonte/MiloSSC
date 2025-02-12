@@ -46,7 +46,7 @@ struct InitialMenuView: View {
                     Spacer()
                     
                     Button {
-                        coordinator.push(page: .MinigamesView)
+                        coordinator.push(page: .MinigamesMenuView)
                     } label: {}
                         .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: 150))
                         .padding(.bottom, 40)

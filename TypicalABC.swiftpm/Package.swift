@@ -29,6 +29,9 @@ let package = Package(
                 .landscapeRight,
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad]))
+            ],
+            capabilities: [
+                .camera(purposeString: "teste")
             ]
         )
     ],
@@ -36,6 +39,10 @@ let package = Package(
         .executableTarget(
             name: "AppModule",
             path: ".",
+            resources: [
+                .process("Resources"),
+                .copy("ML/MNISTClassifier.mlmodelc")
+            ],
             swiftSettings: [
                 .enableUpcomingFeature("BareSlashRegexLiterals")
             ]
