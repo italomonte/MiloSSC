@@ -5,6 +5,8 @@ import SwiftUI
 struct InitialMenuView: View {
     
     @EnvironmentObject var coordinator: Coordinator
+    @State private var images = ["InitialBg1", "InitialBg2"]
+    @State private var indexMenuStep = 0
 
     @State var isSettingOpen = false
     
@@ -13,7 +15,15 @@ struct InitialMenuView: View {
             
             ZStack {
                 
-                ImageLoop(assets: ["InitialBg1", "InitialBg2"])
+                ImageLoop(assets: Binding(get: {
+                    self.images
+                }, set: { value  in
+                    self.images = value
+                }), indexHistoryStep: Binding(get: {
+                    self.indexMenuStep
+                }, set: { value  in
+                    self.indexMenuStep = value
+                }), framesPerSecond: 1, contentMode: .fill)
                     .ignoresSafeArea()
                 
                 VStack{
@@ -46,7 +56,7 @@ struct InitialMenuView: View {
                     Spacer()
                     
                     Button {
-                        coordinator.push(page: .MinigamesMenuView)
+                        coordinator.push(page: .HistoryPassView)
                     } label: {}
                         .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: 150))
                         .padding(.bottom, 40)

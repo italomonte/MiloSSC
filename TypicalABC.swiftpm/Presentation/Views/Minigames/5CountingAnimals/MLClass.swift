@@ -80,12 +80,3 @@ extension UIImage {
     }
 }
 
-// Uso:
-//if let classifier = MNISTClassifierHandler(),
-//   let image = UIImage(named: "digit.png") {
-//    if let result = classifier.classify(image: image) {
-//        print("Número detectado: \(result)")
-//    } else {
-//        print("Não foi possível classificar a imagem.")
-//    }
-//}

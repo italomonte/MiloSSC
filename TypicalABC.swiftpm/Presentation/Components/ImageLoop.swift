@@ -9,14 +9,22 @@ import SwiftUI
 
 struct ImageLoop: View {
     
-    var assets: [String]
-    @State private var index = 0
+    @Binding var assets: [String]
+    @Binding var indexHistoryStep: Int
     @State private var timer: Timer?
+    var framesPerSecond: Int
+    var contentMode: ContentMode
+    //    var width: CGFloat
+    
+    func calculateIntervalToTimer() -> Double {
+        return 1.0/Double(framesPerSecond)
+    }
     
     var body: some View {
-        Image(assets[index])
+        Image(assets[indexHistoryStep])
             .resizable()
-            .scaledToFill()
+            .aspectRatio(contentMode: contentMode)
+        //            .frame(maxWidth: width)
             .onAppear {
                 startImageLoop()
             }
@@ -26,15 +34,16 @@ struct ImageLoop: View {
     }
     
     func startImageLoop() {
-            stopImageLoop() // Garante que não há múltiplos Timers rodando
-            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                    index = (index + 1) % assets.count
-                
-            }
+        stopImageLoop() // Garante que não há múltiplos Timers rodando
+        timer = Timer.scheduledTimer(withTimeInterval: calculateIntervalToTimer(), repeats: true) { _ in
+            
+            indexHistoryStep = (indexHistoryStep + 1) % assets.count
+            
         }
-        
-        func stopImageLoop() {
-            timer?.invalidate()
-            timer = nil
-        }
+    }
+    
+    func stopImageLoop() {
+        timer?.invalidate()
+        timer = nil
+    }
 }

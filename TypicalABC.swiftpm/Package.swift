@@ -16,6 +16,8 @@ let package = Package(
         .iOSApplication(
             name: "TypicalABC",
             targets: ["AppModule"],
+            bundleIdentifier: "emao.idserve.net.ssc.milo",
+            teamIdentifier: "4XY84J5345",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .placeholder(icon: .openBook),
@@ -32,7 +34,8 @@ let package = Package(
             ],
             capabilities: [
                 .camera(purposeString: "teste")
-            ]
+            ],
+            appCategory: .education
         )
     ],
     targets: [

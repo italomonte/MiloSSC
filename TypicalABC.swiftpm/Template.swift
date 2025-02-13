@@ -30,23 +30,15 @@ struct Template: View {
                     HStack {
                         Button {
                             presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("CloseBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
+                        } label: {}
+                            .buttonStyle(PressableButtonStyle(normalImage: "SettingsBtn", pressedImage: "SettingsBtnPressed", width: 150))
                         
                         Spacer()
                         
                         Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("SettingsBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
+                            print("settings")
+                        } label: {}
+                            .buttonStyle(PressableButtonStyle(normalImage: "SettingsBtn", pressedImage: "SettingsBtnPressed", width: 150))
                     }
                     .padding(.horizontal)
                     

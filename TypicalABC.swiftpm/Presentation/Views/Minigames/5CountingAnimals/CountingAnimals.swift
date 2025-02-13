@@ -1,23 +1,42 @@
-
-
 import SwiftUI
 import PencilKit
 
 struct CountingAnimalsView: View {
-    let image: UIImage = UIImage(named: "four") ?? UIImage(systemName: "circle")!
+    @State private var canvasView = PKCanvasView()
+    @State private var recognizedNumber: String = "Desenhe um número"
+    @State private var imageDrawned: UIImage?
     
-    let classifier = MNISTClassifierHandler()
-    
+    let classifier = MNISTClassifierHandler() // Modelo de ML
+
     var body: some View {
         VStack {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFit()
+            PencilKitNumberView(canvasView: $canvasView)
                 .frame(width: 200, height: 200)
-            Text("\(classifier?.classify(image: image) ?? "Unknown")")
+                .border(Color.gray, width: 4)
+
+            Button("Identificar Número") {
+                classifyDrawing()
+            }
+            .padding()
+            
+            Text("Número identificado: \(recognizedNumber)")
+                .font(.title)
+                .bold()
+            
+            Text("Número desenhadao")
+            Image(uiImage: imageDrawned ?? UIImage())
+                .border(.red)
+        }
+    }
+
+    private func classifyDrawing() {
+        let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0)
+        self.imageDrawned = image
+        
+        if let result = classifier?.classify(image: image) {
+            recognizedNumber = result
+        } else {
+            recognizedNumber = "Erro"
         }
     }
 }
-
-
-
