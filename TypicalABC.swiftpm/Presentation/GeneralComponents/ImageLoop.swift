@@ -12,19 +12,17 @@ struct ImageLoop: View {
     @Binding var assets: [String]
     @Binding var indexHistoryStep: Int
     @State private var timer: Timer?
-    var framesPerSecond: Int
+    @Binding var framesPerSecond: Int
     var contentMode: ContentMode
-    //    var width: CGFloat
     
     func calculateIntervalToTimer() -> Double {
         return 1.0/Double(framesPerSecond)
     }
     
     var body: some View {
-        Image(assets[indexHistoryStep])
+        Image(assets[indexHistoryStep % assets.count])
             .resizable()
             .aspectRatio(contentMode: contentMode)
-        //            .frame(maxWidth: width)
             .onAppear {
                 startImageLoop()
             }

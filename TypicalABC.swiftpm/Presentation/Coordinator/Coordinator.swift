@@ -52,7 +52,6 @@ class Coordinator: ObservableObject {
             // History
             case .InfoView: InfoView()
             case .HistoryPassView: HistoryPassView()
-            case .HistoryCardsView: HistoryCardsView()
             case .H9View: H9View()
             case .H10View: H10View()
                 

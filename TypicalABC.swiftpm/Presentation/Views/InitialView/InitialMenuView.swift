@@ -7,6 +7,7 @@ struct InitialMenuView: View {
     @EnvironmentObject var coordinator: Coordinator
     @State private var images = ["InitialBg1", "InitialBg2"]
     @State private var indexMenuStep = 0
+    @State private var bgFramesPerSecond = 1
 
     @State var isSettingOpen = false
     
@@ -23,31 +24,15 @@ struct InitialMenuView: View {
                     self.indexMenuStep
                 }, set: { value  in
                     self.indexMenuStep = value
-                }), framesPerSecond: 1, contentMode: .fill)
+                }), framesPerSecond: $bgFramesPerSecond, contentMode: .fill)
                     .ignoresSafeArea()
                 
                 VStack{
                     
-                    // Header
-                    HStack {
-                        
-                        Button {
-                            coordinator.push(page: .InfoView)
-                        } label: {}
-                            .buttonStyle(PressableButtonStyle(normalImage: "InfoBtn", pressedImage: "InfoBtnPressed", width: 100))
-                        
-                        Spacer()
-                        
-                        
-                        Button {
-                            isSettingOpen.toggle()
-                        } label: {}
-                            .buttonStyle(PressableButtonStyle(normalImage: "SettingsBtn", pressedImage: "SettingsBtnPressed", width: 100))
-                        
-                    }
-                    .padding()
-                    
+                    // UI Button Settings
+                    UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
                     Spacer()
+                    
                 }
                 .padding(.vertical)
                 

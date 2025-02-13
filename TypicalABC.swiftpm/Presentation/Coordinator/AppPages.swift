@@ -15,7 +15,6 @@ enum AppPages: Hashable {
     
     // History
     case HistoryPassView
-    case HistoryCardsView
     case H9View
     case H10View
     
