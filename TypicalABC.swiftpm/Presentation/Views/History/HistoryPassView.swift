@@ -58,10 +58,8 @@ struct HistoryPassView: View {
                 .padding()
                 
                 // UI Button Settings
-                VStack{
-                    UIButtons(buttons: ["CloseBtn", "SettingsBtn"])
-                    Spacer()
-                }
+                UIButtons(buttons: ["CloseBtn", "SettingsBtn"])
+                    
                 
             }
         }

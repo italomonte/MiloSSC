@@ -20,34 +20,39 @@ struct CallToMinigamesView: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                 
-                // UI
-                VStack{
-                    HStack {
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("CloseBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("SettingsBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                    }
-                    .padding(.horizontal)
-                    
+                HStack{
                     Spacer()
+                    VStack (spacing: 70){
+                        VStack(spacing: 25){
+                            Image("logo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(maxWidth: 0.31 * geo.size.width)
+                            
+                            VStack(alignment: .leading, spacing: 25){
+                                Text("How about starting to explore worlds through words like Charlie?")
+                                    .font(.patrickHandBigger)
+
+                                Text("Here are a lot of games for you to have fun and learn!")
+                                    .font(.patrickHandBigger)
+
+                            }
+                            .multilineTextAlignment(.center)
+                            .font(.patrickHandBigger)
+                            .frame(maxWidth: geo.size.width * 0.35)
+                        }
+                        .foregroundStyle(.white)
+                        
+                        Button {
+                            coordinator.push(page: .MinigamesMenuView)
+                        } label: {}
+                            .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: 150))
+                        
+                    }.frame(width: 0.5 * geo.size.width)
                 }
                 
+                // UI
+                UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
                 
                 
             }

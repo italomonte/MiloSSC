@@ -12,7 +12,7 @@ struct MinigamesMenuView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var coordinator: Coordinator
     
-    
+    let destinations: [AppPages] = [.OrderTheNumbersView, .ExploringTheAlphabet, .CountingAnimals]
     var body: some View {
         GeometryReader { geo in
             ZStack{
@@ -24,79 +24,37 @@ struct MinigamesMenuView: View {
                     .ignoresSafeArea()
                 
                 VStack{
-                    
-                    ScrollView {
+                    ScrollView(.horizontal) {
                         HStack (spacing: 20){
                             
-                            Button {
-                                coordinator.push(page: .OrderTheNumbersView)
-                            } label: {
-                                Text("Order the number fluffies")
-                                    .foregroundStyle(.white)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(.green)
-                                            .frame(width: 300, height: 200)
-                                    )
+                            ForEach(0 ..< 3) { index in
+                                Button {
+                                    coordinator.push(page: destinations[index])
+                                } label: {
+                                    VStack{
+                                        Image("capa" + String(index))
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: geo.size.width * 0.33)
+                                        
+                                        Text("Order the number fluffies")
+                                            .foregroundStyle(.white)
+                                    }
+                                }
                             }
-                            
-                            Button {
-                                coordinator.push(page: .ExploringTheAlphabet)
-                            } label: {
-                                Text("Exploring the alphabet")
-                                    .foregroundStyle(.white)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(.green)
-                                            .frame(width: 300, height: 200)
-                                    )
-                            }
-                            
-                            Button {
-                                coordinator.push(page: .CountingAnimals)
-                            } label: {
-                                Text("Counting AnimalS")
-                                    .foregroundStyle(.white)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12)
-                                            .fill(.green)
-                                            .frame(width: 300, height: 200)
-                                    )
-                            }
+
                         }
                     }
+                    .scrollIndicators(.hidden)
+                    .padding(.horizontal, 97)
+                    .scrollClipDisabled(true)
+                    
                 }
+
                 
                 // UI
-                VStack{
-                    HStack {
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("CloseBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("SettingsBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    Spacer()
-                }
-                
-                
-                
+                UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
+
             }
         }
         .navigationBarBackButtonHidden(true)

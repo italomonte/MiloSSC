@@ -12,7 +12,7 @@ struct PencilKitView: UIViewRepresentable {
         pencilKitCanvasView.drawingPolicy = PKCanvasViewDrawingPolicy.anyInput
 
         // Definindo a ferramenta de desenho com um traço mais grosso
-        let thickInkTool = PKInkingTool(.pen, color: .black, width: 50) // Ajuste o width conforme necessário
+        let thickInkTool = PKInkingTool(.crayon, color: .black, width: 100) // Ajuste o width conforme necessário
         pencilKitCanvasView.tool = thickInkTool
         
         pencilKitCanvasView.becomeFirstResponder()

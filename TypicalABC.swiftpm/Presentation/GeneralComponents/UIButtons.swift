@@ -13,26 +13,31 @@ struct UIButtons: View {
     var buttons: [String] = []
     
     var body: some View {
-        HStack {
-            
-            Button {
-                presentationMode.wrappedValue.dismiss()
-            } label: {}
-                .buttonStyle(PressableButtonStyle(normalImage: buttons[0], pressedImage: buttons[0] + "Pressed", width: 100))
-            
-            Spacer()
-            
-            HStack{
-                Button { } label: { }
-                    .buttonStyle(PressableButtonStyle(normalImage: buttons[1], pressedImage: buttons[1] + "Pressed", width: 100))
-                if buttons.count > 2 {
-                    Button {} label: { }
-                        .buttonStyle(PressableButtonStyle(normalImage: buttons[2], pressedImage: buttons[2] + "Pressed", width: 100))
+        VStack{
+            HStack {
+                
+                Button {
+                    presentationMode.wrappedValue.dismiss()
+                } label: {}
+                    .buttonStyle(PressableButtonStyle(normalImage: buttons[0], pressedImage: buttons[0] + "Pressed", width: 100))
+                
+                Spacer()
+                
+                HStack{
+                    Button { } label: { }
+                        .buttonStyle(PressableButtonStyle(normalImage: buttons[1], pressedImage: buttons[1] + "Pressed", width: 100))
+                    if buttons.count > 2 {
+                        Button {} label: { }
+                            .buttonStyle(PressableButtonStyle(normalImage: buttons[2], pressedImage: buttons[2] + "Pressed", width: 100))
+                    }
+                    
                 }
                 
             }
+            .padding(.horizontal)
             
-        }.padding()
-        .padding(.horizontal)
+            Spacer()
+        }
+        .padding()
     }
 }

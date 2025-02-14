@@ -30,7 +30,8 @@ struct TextContainer: View {
                 
                 Text(historyPassVm.historyTexts[historyPassVm.indexHistoryMoment % historyPassVm.historyTexts.count])
                     .font(.patrickHand)
-                    .frame(maxWidth: 0.72 * geo.size.width)
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: 0.75 * geo.size.width)
                     .padding(.bottom)
                 
                 Spacer()

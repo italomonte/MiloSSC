@@ -8,5 +8,6 @@
 import SwiftUI
 
 extension Font {
-    static let patrickHand = Font.custom("PatrickHand-Regular", size: 32)
+    static let patrickHand = Font.custom("PatrickHand-Regular", size: 30)
+    static let patrickHandBigger = Font.custom("PatrickHand-Regular", size: 36)
 }

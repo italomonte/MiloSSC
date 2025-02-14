@@ -12,6 +12,7 @@ struct InitialMenuView: View {
     @State var isSettingOpen = false
     
     var body: some View {
+        
         NavigationStack{
             
             ZStack {
@@ -27,14 +28,10 @@ struct InitialMenuView: View {
                 }), framesPerSecond: $bgFramesPerSecond, contentMode: .fill)
                     .ignoresSafeArea()
                 
-                VStack{
-                    
-                    // UI Button Settings
-                    UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
-                    Spacer()
-                    
-                }
-                .padding(.vertical)
+
+                // UI Button Settings
+                UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
+                    .padding(.vertical)
                 
                 VStack {
                     
@@ -58,3 +55,4 @@ struct InitialMenuView: View {
 #Preview {
     InitialMenu()
 }
+
