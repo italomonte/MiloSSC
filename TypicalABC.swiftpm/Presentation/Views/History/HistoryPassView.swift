@@ -13,6 +13,7 @@ struct HistoryPassView: View {
     @EnvironmentObject var coordinator: Coordinator
     @ObservedObject var historyPassVm = HistoryPassViewModel()
     @State var bgFramesPerSecond: Int = 1
+    
     var body: some View {
         GeometryReader { geo in
             ZStack{
@@ -21,21 +22,35 @@ struct HistoryPassView: View {
                     .ignoresSafeArea()
                     .onAppear{
                         print(historyPassVm.historyBgMoment)
-
                     }
                     .onChange(of: historyPassVm.historyBgMoment) { _, newValue in
                         print(newValue)
                     }
                 
-                // Content
-                if historyPassVm.indexHistoryMoment >= 5 {
-                    
+                // Card Content
+                if historyPassVm.indexHistoryMoment > 4 && historyPassVm.indexHistoryMoment < 7 {
                     Color.black.opacity(0.45)
                         .ignoresSafeArea()
                     
                     CardsContainer(geo: geo, historyPassVm: historyPassVm)
                 }
                 
+                // DreamBoards
+                if historyPassVm.indexHistoryMoment >= 7 && historyPassVm.indexHistoryMoment < 9 {
+                    Color.black.opacity(0.45)
+                        .ignoresSafeArea()
+                    VStack{
+                        Image("H" + String(historyPassVm.indexHistoryMoment + 2))
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: geo.size.width * 0.95)
+                        
+                        Spacer()
+                    }
+                }
+                
+                
+                // Text
                 VStack{
                     Spacer()
                     TextContainer(historyPassVm: historyPassVm, geo: geo)

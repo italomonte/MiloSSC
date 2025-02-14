@@ -30,6 +30,11 @@ class HistoryPassViewModel: ObservableObject {
     @Published var goToCallMinigames: Bool = false
     @Published var framesPerSecond: Int = 0
     
+    init() {
+        registerCustomFont()
+
+    }
+    
     private var historyBgMoments: [[String]] = [
         ["H1_1", "H1_2"],
         ["H2_1", "H2_2", "H2_3", "H2_4" ],
@@ -69,8 +74,36 @@ class HistoryPassViewModel: ObservableObject {
                                "H7-espaco-26",
                               ], framesPerSecond: 13),
         CardAnimation(frames: ["H8-Monster-1", "H8-Monster-2"], framesPerSecond: 1),
-        CardAnimation(frames: ["H8-Wizard-1", "H8-Wizard-2", "H8-Wizard-3", "H8-Wizard-4"], framesPerSecond: 5),
+        CardAnimation(frames: ["H8-Wizard-1", "H8-Wizard-2", "H8-Wizard-3", "H8-Wizard-4"], framesPerSecond: 1),
     ]
+    
+    let historyTexts: [String] = [
+        "Once upon a time there was a little boy named Charlie. Curious and shy, he lived in a noisy and boring world.",
+        "Every day Charlie went to school. He tried to participate in class, but the words in the books seemed to dance in front of him. He felt lost when the other students answered questions quickly, while he needed more time to process.",
+        "Until one day the teacher brought him a book with several drawings and magical colors. Charlie didn't understand those strange letters, but he could understand the stories through the pictures.",
+        "Because of this Charlie fell in love with books. With them, Charlie could explore different worlds and be whoever he wanted to be.",
+        "He could be an explorer of distant kingdoms, exploring castles and discovering exotic animals...",
+        "He could be an opera singer, or even an astronaut.",
+        "He could be a wizard and know magical creatures",
+        "Because of this Charlie became curious to understand what those strange letters in the books meant. So determined, he started to study through games. That way, he had fun and did well in school.",
+        "Until finally after playing several times with his parents, Charlie could now understand those confusing letters. And from that day on, Charlie started reading several and several books, so the world was no longer boring, after all, now he could explore other worlds whenever he wanted through books."
+        
+    ]
+    
+    func registerCustomFont() {
+        guard let fontURL = Bundle.main.url(forResource: "PatrickHand-Regular", withExtension: "ttf"),
+              let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
+              let font = CGFont(fontDataProvider) else {
+            fatalError("Erro ao carregar a fonte")
+        }
+
+        var error: Unmanaged<CFError>?
+        if !CTFontManagerRegisterGraphicsFont(font, &error) {
+            print("Erro ao registrar a fonte: \(error!.takeRetainedValue())")
+        }
+    }
+
+    // Chamar a função para registrar a fonte
     
     func handleHistoryMoment(movement: HistoryMovement) {
         if movement == .next {
@@ -87,19 +120,23 @@ class HistoryPassViewModel: ObservableObject {
                 visibleHistoryCards = [2, 3]
             }
             
-            if indexHistoryMoment == 7 { // muda cards secundários para a CTAView
+            if indexHistoryMoment == 9 { // muda cards secundários para a CTAView
                 goToCallMinigames.toggle()
             }
             
         } else if movement == .previous && indexHistoryMoment > 0 {
             indexHistoryStep = 0
             indexHistoryMoment -= 1
-            historyBgMoment = historyBgMoments[indexHistoryMoment % historyBgMoments.count]
+            print(indexHistoryMoment)
             
-            if indexHistoryMoment >= 5 { // segundos cards
+            if indexHistoryMoment == 5 { // segundos cards
                 cardOneStep = 0
                 cardTwoStep = 0
                 visibleHistoryCards = [0, 1]
+            }
+            
+            if indexHistoryMoment <= 5{
+                historyBgMoment = historyBgMoments[indexHistoryMoment % historyBgMoments.count]
             }
 
         }

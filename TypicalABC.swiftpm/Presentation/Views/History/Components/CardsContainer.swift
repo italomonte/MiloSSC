@@ -28,9 +28,6 @@ struct CardsContainer: View {
                         .frame(width: geo.size.width * 0.35, height: geo.size.height * 0.68)
                     
                 }
-                .onChange(of: historyPassVm.historyCards[historyPassVm.visibleHistoryCards[0]].framesPerSecond, { oldValue, newValue in
-                    print("onChange: \(newValue)")
-                })
                 .overlay {
                     Image("history-border")
                         .resizable()
@@ -45,6 +42,7 @@ struct CardsContainer: View {
                 ImageLoop(assets: $historyPassVm.historyCards[historyPassVm.visibleHistoryCards[1]].frames, indexHistoryStep: $historyPassVm.cardTwoStep,
                           framesPerSecond: $historyPassVm.historyCards[historyPassVm.visibleHistoryCards[1]].framesPerSecond,
                           contentMode: .fit)
+                
                 .frame(width: geo.size.width * 0.35)
                 .mask {
                     RoundedRectangle(cornerRadius: 36)
