@@ -26,6 +26,10 @@ class Coordinator: ObservableObject {
         path.removeLast(path.count)
     }
     
+    func popTo(page index: Int) {
+        path.removeLast(path.count - index)
+    }
+    
     func presentFullScreenCover(_ cover: FullScreenCover) {
         self.fullScreenCover = cover
     }
@@ -52,8 +56,6 @@ class Coordinator: ObservableObject {
             // History
             case .InfoView: InfoView()
             case .HistoryPassView: HistoryPassView()
-            case .H9View: H9View()
-            case .H10View: H10View()
                 
             // Minigames Menu
             case .CallToMinigames: CallToMinigamesView()

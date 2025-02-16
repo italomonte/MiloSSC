@@ -7,7 +7,9 @@ import SwiftUI
 
 struct CallToMinigamesView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+    @State var isSettingOpen = false
+
     @EnvironmentObject var coordinator: Coordinator
     
     var body: some View {
@@ -52,8 +54,10 @@ struct CallToMinigamesView: View {
                 }
                 
                 // UI
-                UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
-                
+                UIButtons(buttons: [
+                    ("InfoBtn", {dismiss()}),
+                    ("SettingsBtn", {isSettingOpen = true})
+                ])
                 
             }
         }

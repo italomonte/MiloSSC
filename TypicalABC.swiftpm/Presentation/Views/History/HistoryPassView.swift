@@ -9,7 +9,9 @@ import SwiftUI
 
 struct HistoryPassView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+    @State var isSettingOpen = false
+
     @EnvironmentObject var coordinator: Coordinator
     @ObservedObject var historyPassVm = HistoryPassViewModel()
     @State var bgFramesPerSecond: Int = 1
@@ -58,8 +60,10 @@ struct HistoryPassView: View {
                 .padding()
                 
                 // UI Button Settings
-                UIButtons(buttons: ["CloseBtn", "SettingsBtn"])
-                    
+                UIButtons(buttons: [
+                    ("CloseBtn", {dismiss()}),
+                    ("SettingsBtn", {isSettingOpen = true})
+                ])
                 
             }
         }

@@ -5,6 +5,7 @@ import SwiftUI
 struct InitialMenuView: View {
     
     @EnvironmentObject var coordinator: Coordinator
+    @Environment(\.dismiss) var dismiss
     @State private var images = ["InitialBg1", "InitialBg2"]
     @State private var indexMenuStep = 0
     @State private var bgFramesPerSecond = 1
@@ -30,8 +31,11 @@ struct InitialMenuView: View {
                 
 
                 // UI Button Settings
-                UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
-                    .padding(.vertical)
+                UIButtons(buttons: [
+                    ("InfoBtn", {dismiss()}),
+                    ("SettingsBtn", {isSettingOpen = true})
+                ])
+                .padding(.vertical)
                 
                 VStack {
                     

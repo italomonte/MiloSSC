@@ -9,7 +9,8 @@ import SwiftUI
 
 struct MinigamesMenuView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @State var isSettingOpen = false
+
     @EnvironmentObject var coordinator: Coordinator
     
     let destinations: [AppPages] = [.OrderTheNumbersView, .ExploringTheAlphabet, .CountingAnimals]
@@ -53,8 +54,11 @@ struct MinigamesMenuView: View {
 
                 
                 // UI
-                UIButtons(buttons: ["InfoBtn", "SettingsBtn"])
-
+                UIButtons(buttons: [
+                    ("InfoBtn", {coordinator.push(page: .InfoView)}),
+                    ("StoryBtn", {coordinator.popTo(page: 1)}),
+                    ("SettingsBtn", {isSettingOpen = true})
+                ])
             }
         }
         .navigationBarBackButtonHidden(true)
