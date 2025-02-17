@@ -1,7 +1,7 @@
 import SwiftUI
 import PencilKit
 
-struct CountingAnimalsView: View {
+struct CountingPigsView: View {
     @State private var canvasView = PKCanvasView()
     @State private var recognizedNumber: String = "Desenhe um número"
     @State private var imageDrawned: UIImage?

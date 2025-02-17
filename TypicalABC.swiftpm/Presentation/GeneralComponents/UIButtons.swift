@@ -29,7 +29,7 @@ struct UIButtons: View {
                     if buttons.count > 2 {
                         Button {
                             buttons[2].1()
-                        } label: { }
+                        } label: {  }
                             .buttonStyle(PressableButtonStyle(normalImage: buttons[2].0, pressedImage: buttons[2].0 + "Pressed", width: 100))
                     }
                     

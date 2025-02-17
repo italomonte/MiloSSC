@@ -55,7 +55,7 @@ struct CallToMinigamesView: View {
                 
                 // UI
                 UIButtons(buttons: [
-                    ("InfoBtn", {dismiss()}),
+                    ("InfoBtn", {coordinator.push(page: .InfoView)}),
                     ("SettingsBtn", {isSettingOpen = true})
                 ])
                 

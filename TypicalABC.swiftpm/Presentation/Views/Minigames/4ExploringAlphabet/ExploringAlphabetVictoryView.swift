@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-struct Template: View {
+struct ExploringAlphabetVictoryView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
@@ -21,10 +21,19 @@ struct Template: View {
             ZStack{
                 
                 // Background
-                Image("alphabetBg")
+                Image("numbersBg")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
+                
+                // Content
+                Image("VictoryNumbersElements")
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                
+                // Try Again Button
+                
                 
                 // UI
                 UIButtons(buttons: [

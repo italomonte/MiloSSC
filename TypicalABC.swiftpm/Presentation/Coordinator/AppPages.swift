@@ -22,8 +22,13 @@ enum AppPages: Hashable {
     
     // Minigames
     case OrderTheNumbersView
+    case OrderNumbersVictoryView
+    
     case ExploringTheAlphabet
-    case CountingAnimals
+    case ExploringTheAlphabetVictoryView
+    
+    case CountingPigs
+    case CountingPigsVictoryView
 }
 
 

@@ -5,9 +5,13 @@ import PencilKit
 
 struct ExploringAlphabetView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+    @State var isSettingOpen = false
     @EnvironmentObject var coordinator: Coordinator
     
+    var letterSelected: String  = "A"
+    
+    let alphabet: [String] = (65...90).map { String(UnicodeScalar($0)!) }
     
     var body: some View {
         GeometryReader { geo in
@@ -19,55 +23,77 @@ struct ExploringAlphabetView: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                 
+                Image("symbolsBgAlphabet")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: calculatePercent(dimensionValue: 2090, dimension: .width, geo: geo))
+                    .offset(y: calculatePercent(dimensionValue: -100, dimension: .height, geo: geo))
+                
                 // Content
-                ZStack {
-                    Image("AVazado")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: geo.size.width * 0.604, height: geo.size.height * 0.633)
+                HStack (spacing: 25){
+                    //Paint
+                    ZStack {
+                        Image(letterSelected + "Vazado")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo))
+                        
+                        PencilKitView()
+                            .frame(width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo))
+                            .mask(
+                                Image(letterSelected)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: calculatePercent(dimensionValue: 705, dimension: .width, geo: geo))
+                                    .blendMode(.destinationOver)
+                            )
+                            .offset(y: 12)
+                    }
                     
-                    PencilKitView()
-                        .frame(width: geo.size.width * 0.604, height: geo.size.height * 0.633)
-                        .mask(
-                            Image("A")
+                    VStack{
+                        ForEach(1 ..< 3) { number in
+                            
+                            Image(letterSelected + String(number) + "CardSound")
                                 .resizable()
                                 .scaledToFit()
-                                    
-                                .frame(width: geo.size.width * 0.311)
-                                .blendMode(.destinationOver)
-                        )
-                        .offset(y: 11)
-                }
-
-                // UI
-                VStack{
-                    HStack {
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("CloseBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("SettingsBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
+                                .frame(width: calculatePercent(dimensionValue: 472, dimension: .width, geo: geo))
                         }
                     }
-                    .padding(.horizontal)
                     
+                    
+                }
+                .offset(y: calculatePercent(dimensionValue: -50, dimension: .height, geo: geo))
+                
+                
+                VStack{
                     Spacer()
+                    ScrollView(.horizontal){
+                        HStack(spacing: -4) {
+                            ForEach(alphabet, id: \.self) { letter in
+                                ZStack{
+                                    Image("lettersBg")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(
+                                            width: calculatePercent(dimensionValue: 190, dimension: .width, geo: geo)
+//                                            height: calculatePercent(dimensionValue: 205, dimension: .height, geo: geo)
+                                        )
+                                    
+                                    Text(letter)
+                                        .font(.system(size: calculatePercent(dimensionValue: 150, dimension: .width, geo: geo), weight: .bold, design: .default))
+                                        .foregroundStyle(Color.lightGreen)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.bottom)
                 }
                 
-                
+                // UI
+                UIButtons(buttons: [
+                    ("CloseBtn", {dismiss()}),
+                    ("SettingsBtn", {isSettingOpen = true})
+                ])
                 
             }
         }

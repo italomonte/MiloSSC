@@ -32,5 +32,18 @@ class OrderNumbersViewModel: ObservableObject {
         
     }
     
+    func isOrdered() -> Bool {
+        let isOrdered = true
+        for numbersCard in numbersCards {
+            if numbersCard.id != numbersCards.firstIndex(of: numbersCard)! {
+                return false
+            }
+        }
+        return isOrdered
+    }
+    
+    func shuffleCards() {
+        self.numbersCards = self.numbersCards.shuffled()
+    }
     
 }

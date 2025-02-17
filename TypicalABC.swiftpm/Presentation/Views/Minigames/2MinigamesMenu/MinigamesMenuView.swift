@@ -10,10 +10,10 @@ import SwiftUI
 struct MinigamesMenuView: View {
     
     @State var isSettingOpen = false
-
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
     
-    let destinations: [AppPages] = [.OrderTheNumbersView, .ExploringTheAlphabet, .CountingAnimals]
+    let destinations: [AppPages] = [.OrderTheNumbersView, .ExploringTheAlphabet, .CountingPigs]
     var body: some View {
         GeometryReader { geo in
             ZStack{
@@ -55,8 +55,8 @@ struct MinigamesMenuView: View {
                 
                 // UI
                 UIButtons(buttons: [
-                    ("InfoBtn", {coordinator.push(page: .InfoView)}),
-                    ("StoryBtn", {coordinator.popTo(page: 1)}),
+                    ("CloseBtn", {dismiss()}),
+                    ("StoryBtn", {coordinator.popTo(page: 0)}),
                     ("SettingsBtn", {isSettingOpen = true})
                 ])
             }

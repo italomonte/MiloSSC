@@ -12,12 +12,16 @@ struct NumberCard: Identifiable, Equatable {
 
 struct OrderNumbersView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
     @StateObject var orderNumbersVm = OrderNumbersViewModel()
+    @State var isSettingOpen = false
+
     
     @State private var draggedItem: NumberCard? = nil
     @State var offset = 0.0
+    
+    @State var isOrdered: Bool = false
     
     var body: some View {
         GeometryReader { geo in
@@ -35,6 +39,7 @@ struct OrderNumbersView: View {
                     VStack {
                         
                         Text("Drag the fluffies into numerical order, from smallest to biggest. Colors and sizes can help you figure out the order.")
+                            .font(.patrickHandBigger)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.white)
                             .font(.largeTitle)
@@ -64,39 +69,23 @@ struct OrderNumbersView: View {
                 }
                 
                 // UI
-                VStack{
-                    HStack {
-                        Button {
-                            presentationMode.wrappedValue.dismiss()
-                        } label: {
-                            Image("CloseBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                        
-                        Spacer()
-                        
-                        Button {
-                            coordinator.push(page: .MinigamesMenuView)
-                        } label: {
-                            Image("SettingsBtn")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxWidth: 0.08 * geo.size.width)
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    Spacer()
-                }
-                
+                UIButtons(buttons: [
+                    ("CloseBtn", {dismiss()}),
+                    ("SettingsBtn", {isSettingOpen = true})
+                ])
                 
                 
             }
         }
         .navigationBarBackButtonHidden(true)
-        
+        .onChange(of: isOrdered) { oldValue, newValue in
+            if isOrdered {
+                coordinator.push(page: .OrderNumbersVictoryView)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    orderNumbersVm.shuffleCards()
+                }
+            }
+        }
     }
     
     // MARK: - Função para mover os itens
@@ -104,6 +93,7 @@ struct OrderNumbersView: View {
         guard source != destination else { return }
         let movedItem = orderNumbersVm.numbersCards.remove(at: source)
         orderNumbersVm.numbersCards.insert(movedItem, at: destination)
+        isOrdered = orderNumbersVm.isOrdered()
     }
     
     // MARK: - Gesture para arrastar
