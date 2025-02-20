@@ -9,23 +9,30 @@ struct CountingPigsView: View {
     let classifier = MNISTClassifierHandler() // Modelo de ML
 
     var body: some View {
-        VStack {
-            PencilKitNumberView(canvasView: $canvasView)
-                .frame(width: 200, height: 200)
-                .border(Color.gray, width: 4)
-
-            Button("Identificar Número") {
-                classifyDrawing()
-            }
-            .padding()
+        
+        ZStack{
             
-            Text("Número identificado: \(recognizedNumber)")
-                .font(.title)
-                .bold()
+            ARViewContainer()
+                .ignoresSafeArea()
             
-            Text("Número desenhadao")
-            Image(uiImage: imageDrawned ?? UIImage())
-                .border(.red)
+//            VStack {
+//                PencilKitNumberView(canvasView: $canvasView)
+//                    .frame(width: 200, height: 200)
+//                    .border(Color.gray, width: 4)
+//                
+//                Button("Identificar Número") {
+//                    classifyDrawing()
+//                }
+//                .padding()
+//                
+//                Text("Número identificado: \(recognizedNumber)")
+//                    .font(.title)
+//                    .bold()
+//                
+//                Text("Número desenhadao")
+//                Image(uiImage: imageDrawned ?? UIImage())
+//                    .border(.red)
+//            }
         }
     }
 

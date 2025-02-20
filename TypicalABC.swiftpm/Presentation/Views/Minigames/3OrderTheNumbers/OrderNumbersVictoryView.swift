@@ -34,10 +34,7 @@ struct OrderNumbersVictoryView: View {
                 // Try Again Button
                 VStack {
                     
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Spacer()
+                    Spacer(minLength: calculatePercent(dimensionValue: 1128, dimension: .height, geo: geo))
 
                     Button {
                         dismiss()

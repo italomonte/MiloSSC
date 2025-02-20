@@ -14,18 +14,21 @@ struct UIButtons: View {
         VStack{
             HStack {
                 
-                Button {
-                    buttons[0].1()
-                } label: {}
-                    .buttonStyle(PressableButtonStyle(normalImage: buttons[0].0, pressedImage: buttons[0].0 + "Pressed", width: 100))
-                
+                if buttons.count > 1 {
+                    Button {
+                        buttons[0].1()
+                    } label: {}
+                        .buttonStyle(PressableButtonStyle(normalImage: buttons[0].0, pressedImage: buttons[0].0 + "Pressed", width: 100))
+                    
+                }
+
                 Spacer()
                 
                 HStack{
                     Button {
-                        buttons[1].1() }
+                        buttons[ buttons.count > 1 ? 1 : 0].1() }
                     label: { }
-                        .buttonStyle(PressableButtonStyle(normalImage: buttons[1].0, pressedImage: buttons[1].0 + "Pressed", width: 100))
+                        .buttonStyle(PressableButtonStyle(normalImage: buttons[buttons.count > 1 ? 1 : 0].0, pressedImage: buttons[buttons.count > 1 ? 1 : 0].0 + "Pressed", width: 100))
                     if buttons.count > 2 {
                         Button {
                             buttons[2].1()

@@ -7,20 +7,21 @@ struct PencilKitView: UIViewRepresentable {
     
     let toolPicker = PKToolPicker()
     
+    @State var canvasPencilView: PKCanvasView
+    
     func makeUIView(context: Context) -> PKCanvasView {
-        let pencilKitCanvasView = PKCanvasView()
-        pencilKitCanvasView.drawingPolicy = PKCanvasViewDrawingPolicy.anyInput
+         canvasPencilView.drawingPolicy = PKCanvasViewDrawingPolicy.anyInput
 
         // Definindo a ferramenta de desenho com um traço mais grosso
-        let thickInkTool = PKInkingTool(.monoline, color: UIColor(Color.darkGreen), width: 50) // Ajuste o width conforme necessário
-        pencilKitCanvasView.tool = thickInkTool
+        let thickInkTool = PKInkingTool(.monoline, color: UIColor(Color.darknessGreen), width: 70) // Ajuste o width conforme necessário
+        canvasPencilView.tool = thickInkTool
         
-        pencilKitCanvasView.becomeFirstResponder()
-        
-        return pencilKitCanvasView
+        canvasPencilView.becomeFirstResponder()
+        return canvasPencilView
     }
     
     func updateUIView(_ uiView: PKCanvasView, context: Context) {}
+
 }
 
 struct HomeIndicatorHiddenView: UIViewControllerRepresentable {

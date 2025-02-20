@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import PencilKit
 
 struct CoordinatorView: View {
     
@@ -23,7 +24,7 @@ struct CoordinatorView: View {
             get: {coordinator.path},
             set: {coordinator.path = $0}
         )){
-            coordinator.build(page: .ExploringTheAlphabet)
+            coordinator.build(page: .CountingPigs)
                 .navigationDestination(for: AppPages.self) { page in
                     coordinator.build(page: page)
                 }

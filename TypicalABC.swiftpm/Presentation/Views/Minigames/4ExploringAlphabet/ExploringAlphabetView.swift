@@ -3,15 +3,17 @@
 import SwiftUI
 import PencilKit
 
+
 struct ExploringAlphabetView: View {
     
     @Environment(\.dismiss) var dismiss
     @State var isSettingOpen = false
     @EnvironmentObject var coordinator: Coordinator
     
-    var letterSelected: String  = "A"
-    
-    let alphabet: [String] = (65...90).map { String(UnicodeScalar($0)!) }
+    @State var letterSelected: Int  = 65
+    @State var canvasPencilView: PKCanvasView = PKCanvasView()
+    @State private var isOnLetterPainted = false
+    @ObservedObject var alphabetVm = AlphabetViewModel()
     
     var body: some View {
         GeometryReader { geo in
@@ -31,29 +33,87 @@ struct ExploringAlphabetView: View {
                 
                 // Content
                 HStack (spacing: 25){
-                    //Paint
+                    // Paint
                     ZStack {
-                        Image(letterSelected + "Vazado")
+                        Image(String(UnicodeScalar(letterSelected) ?? "A") + "Vazado")
                             .resizable()
                             .scaledToFit()
                             .frame(width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo))
                         
-                        PencilKitView()
+                        
+                        PencilKitView(canvasPencilView: canvasPencilView)
                             .frame(width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo))
                             .mask(
-                                Image(letterSelected)
+                                Image(String(UnicodeScalar(letterSelected) ?? "A"))
                                     .resizable()
                                     .scaledToFit()
-                                    .frame(width: calculatePercent(dimensionValue: 705, dimension: .width, geo: geo))
+                                    .frame(width: calculatePercent(dimensionValue: alphabetVm.alphabet[letterSelected - 65].widthPercent, dimension: .width, geo: geo))
                                     .blendMode(.destinationOver)
                             )
-                            .offset(y: 12)
+                            .offset(
+                                x: alphabetVm.alphabet[letterSelected - 65].offset.width,
+                                y: alphabetVm.alphabet[letterSelected - 65].offset.height
+                            )
+                        
+                        Image(String(UnicodeScalar(letterSelected) ?? "A") + "Direction")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: calculatePercent(
+                                dimensionValue: alphabetVm.alphabet[letterSelected - 65].directionPercent, dimension: .width, geo: geo)
+                            )
+                            .allowsHitTesting(false)
+                            .offset(y: alphabetVm.alphabet[letterSelected - 65].directionOffset)
+                        
+                        VStack{
+                            HStack{
+                                Button {canvasPencilView.drawing = PKDrawing()}
+                                label: { }
+                                    .buttonStyle(PressableButtonStyle(normalImage: "ResetBtn", pressedImage: "ResetBtnPressed", width: calculatePercent(dimensionValue: 120, dimension: .width, geo: geo)))
+                                Spacer()
+                                
+                                Button {
+                                    alphabetVm.alphabet[letterSelected - 65].done = true
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        coordinator.push(page: .ExploringTheAlphabetVictoryView)
+                                    }
+                                }
+                                label: { }
+                                    .buttonStyle(PressableButtonStyle(normalImage: "CheckBtn", pressedImage: "CheckBtnPressed", width: calculatePercent(dimensionValue: 120, dimension: .width, geo: geo)))
+                                
+                            }.padding()
+                            Spacer()
+
+                        }
+                        .padding()
+                        .frame(
+                            width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo),
+                            height: calculatePercent(dimensionValue: 1100, dimension: .height, geo: geo)
+                        )
+                        
+                        VStack{
+                            Spacer()
+
+                            HStack{
+                                Spacer()
+
+                                
+                                
+                            }.padding()
+
+                        }
+                        .padding()
+                        .frame(
+                            width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo),
+                            height: calculatePercent(dimensionValue: 1100, dimension: .height, geo: geo)
+                        )
+
+                        
                     }
                     
+                    // Examples
                     VStack{
                         ForEach(1 ..< 3) { number in
-                            
-                            Image(letterSelected + String(number) + "CardSound")
+                            Image(String(UnicodeScalar(letterSelected) ?? "A") + String(number) + "CardSound")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: calculatePercent(dimensionValue: 472, dimension: .width, geo: geo))
@@ -64,25 +124,17 @@ struct ExploringAlphabetView: View {
                 }
                 .offset(y: calculatePercent(dimensionValue: -50, dimension: .height, geo: geo))
                 
-                
+                // Scrrol Alphabet
                 VStack{
                     Spacer()
                     ScrollView(.horizontal){
-                        HStack(spacing: -4) {
-                            ForEach(alphabet, id: \.self) { letter in
-                                ZStack{
-                                    Image("lettersBg")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(
-                                            width: calculatePercent(dimensionValue: 190, dimension: .width, geo: geo)
-//                                            height: calculatePercent(dimensionValue: 205, dimension: .height, geo: geo)
-                                        )
-                                    
-                                    Text(letter)
-                                        .font(.system(size: calculatePercent(dimensionValue: 150, dimension: .width, geo: geo), weight: .bold, design: .default))
-                                        .foregroundStyle(Color.lightGreen)
-                                }
+                        HStack(spacing: -1) {
+                            ForEach(alphabetVm.alphabet) { letter in
+                                LetterCard( letter: letter, geo: geo, letterSelected: $letterSelected)
+                                    .onTapGesture {
+                                        letterSelected = letter.id
+                                        canvasPencilView.drawing = PKDrawing()
+                                    }
                             }
                         }
                     }

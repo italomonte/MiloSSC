@@ -33,7 +33,7 @@ struct InitialMenuView: View {
                 // UI Button Settings
                 UIButtons(buttons: [
                     ("InfoBtn", {dismiss()}),
-                    ("SettingsBtn", {isSettingOpen = true})
+                    ("SettingsBtn", {isSettingOpen = true}),
                 ])
                 .padding(.vertical)
                 

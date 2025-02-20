@@ -81,7 +81,7 @@ struct OrderNumbersView: View {
         .onChange(of: isOrdered) { oldValue, newValue in
             if isOrdered {
                 coordinator.push(page: .OrderNumbersVictoryView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                     orderNumbersVm.shuffleCards()
                 }
             }

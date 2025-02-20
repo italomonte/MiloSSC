@@ -16,6 +16,7 @@ struct InitialMenu: View {
     
     var body: some View {
         CoordinatorView(coordinator: coordinator)
+//        ContentView()
         
     }
 }
