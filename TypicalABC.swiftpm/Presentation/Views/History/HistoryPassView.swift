@@ -15,7 +15,7 @@ struct HistoryPassView: View {
     @EnvironmentObject var coordinator: Coordinator
     @ObservedObject var historyPassVm = HistoryPassViewModel()
     @State var bgFramesPerSecond: Int = 1
-    
+        
     var body: some View {
         GeometryReader { geo in
             ZStack{
@@ -63,7 +63,7 @@ struct HistoryPassView: View {
                 UIButtons(buttons: [
                     ("CloseBtn", {dismiss()}),
                     ("SettingsBtn", {isSettingOpen = true})
-                ])
+                ], geo: geo)
                 
             }
         }

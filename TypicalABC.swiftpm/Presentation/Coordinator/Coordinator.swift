@@ -69,7 +69,6 @@ class Coordinator: ObservableObject {
             case .ExploringTheAlphabetVictoryView: ExploringAlphabetVictoryView()
                 
             case .CountingPigs: CountingPigsView()
-            case .CountingPigsVictoryView: CountingPigsViewVictoryView()
 
             }
         }

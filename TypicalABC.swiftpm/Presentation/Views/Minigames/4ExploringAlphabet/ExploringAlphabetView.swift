@@ -145,7 +145,7 @@ struct ExploringAlphabetView: View {
                 UIButtons(buttons: [
                     ("CloseBtn", {dismiss()}),
                     ("SettingsBtn", {isSettingOpen = true})
-                ])
+                ], geo: geo)
                 
             }
         }

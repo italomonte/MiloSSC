@@ -57,7 +57,7 @@ struct CallToMinigamesView: View {
                 UIButtons(buttons: [
                     ("InfoBtn", {coordinator.push(page: .InfoView)}),
                     ("SettingsBtn", {isSettingOpen = true}),
-                ])
+                ], geo: geo)
                 
             }
         }

@@ -50,7 +50,7 @@ struct OrderNumbersVictoryView: View {
                 UIButtons(buttons: [
                     ("CloseBtn", {coordinator.popTo(page: 3)}),
                     ("SettingsBtn", {isSettingOpen = true})
-                ])
+                ], geo: geo)
                 
                 
                 

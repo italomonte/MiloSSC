@@ -28,7 +28,6 @@ enum AppPages: Hashable {
     case ExploringTheAlphabetVictoryView
     
     case CountingPigs
-    case CountingPigsVictoryView
 }
 
 

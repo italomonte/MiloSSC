@@ -58,7 +58,7 @@ struct MinigamesMenuView: View {
                     ("CloseBtn", {dismiss()}),
                     ("StoryBtn", {coordinator.popTo(page: 0)}),
                     ("SettingsBtn", {isSettingOpen = true})
-                ])
+                ], geo: geo)
             }
         }
         .navigationBarBackButtonHidden(true)

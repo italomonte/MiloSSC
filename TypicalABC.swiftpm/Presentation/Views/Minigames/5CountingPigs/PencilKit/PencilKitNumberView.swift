@@ -17,9 +17,10 @@ struct PencilKitNumberView: UIViewRepresentable {
     
     func makeUIView(context: Context) -> PKCanvasView {
         canvasView.drawingPolicy = PKCanvasViewDrawingPolicy.anyInput
+        canvasView.backgroundColor = .clear
 
         // Definindo a ferramenta de desenho com um traço mais grosso
-        let thickInkTool = PKInkingTool(.crayon, color: .black, width: 20) // Ajuste o width conforme necessário
+        let thickInkTool = PKInkingTool(.monoline, color: .black, width: 20) // Ajuste o width conforme necessário
         canvasView.tool = thickInkTool
         
         canvasView.becomeFirstResponder()

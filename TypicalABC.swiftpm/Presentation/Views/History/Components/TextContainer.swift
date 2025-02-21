@@ -1,9 +1,3 @@
-//
-//  TextContainer.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 13/02/25.
-//
 import SwiftUI
 
 struct TextContainer: View {
@@ -11,8 +5,49 @@ struct TextContainer: View {
     @ObservedObject var historyPassVm: HistoryPassViewModel
     let geo: GeometryProxy
     
+    @State private var soundVolume = 1
+    @State private var isPlayingSound = false
+    @State private var timerImage: Timer?
+    @State private var timerAudio: Timer?
+    
+    func startAudioLoop() {
+        stopAudioLoop() // Garante que não há múltiplos Timers rodando
+        isPlayingSound = true
+        startImageLoop()
+        
+        print(historyPassVm.indexHistoryMoment)
+        let duration = historyPassVm.voiceSeconds[historyPassVm.indexHistoryMoment]
+        
+        timerAudio = Timer.scheduledTimer(withTimeInterval: TimeInterval(duration), repeats: false) { _ in
+            stopAudioLoop()
+            print("Timer off")
+        }
+    }
+    
+    func stopAudioLoop() {
+        timerAudio?.invalidate()
+        timerAudio = nil
+        isPlayingSound = false
+        soundVolume = 1
+    }
+    
+    func startImageLoop() {
+        stopImageLoop()
+        
+        timerImage = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+            soundVolume = (soundVolume + 1) % 3
+        }
+    }
+    
+    func stopImageLoop() {
+        timerImage?.invalidate()
+        timerImage = nil
+        soundVolume = 1 // Ícone volta ao estado original
+    }
+    
     var body: some View {
         ZStack {
+            
             Image("TextBg")
                 .resizable()
                 .scaledToFit()
@@ -21,29 +56,57 @@ struct TextContainer: View {
             
             HStack {
                 
+                // Previous
                 Button {
+                    historyPassVm.historyVoice[historyPassVm.indexHistoryMoment]?.stop()
+                    stopAudioLoop()
                     self.historyPassVm.handleHistoryMoment(movement: .previous)
                 } label: {}
-                    .buttonStyle(PressableButtonStyle(normalImage: "PassLeftBtn", pressedImage: "PassLeftBtnPressed", width: geo.size.height * 0.06))
+                    .buttonStyle(PressableButtonStyle(normalImage: historyPassVm.indexHistoryMoment == 0 ? "PassLeftBtnDisabled" : "PassLeftBtn", pressedImage: historyPassVm.indexHistoryMoment == 0 ? "PassLeftBtnDisabled" : "PassLeftBtnPressed", width: geo.size.height * 0.06))
+                
+                Spacer()
+        
+                HStack{
+                    // Sound
+                    Image(isPlayingSound ? "soundBtn\(soundVolume)" : "soundBtn2")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: calculatePercent(dimensionValue: 110, dimension: .width, geo: geo))
+                        .onTapGesture {
+                            if isPlayingSound {
+                                historyPassVm.historyVoice[historyPassVm.indexHistoryMoment]?.stop()
+                                stopAudioLoop()
+                            } else {
+                                historyPassVm.historyVoice[historyPassVm.indexHistoryMoment]?.play()
+                                startAudioLoop()
+                            }
+                        }
+                    
+                    // Text
+                    Text(historyPassVm.historyTexts[historyPassVm.indexHistoryMoment % historyPassVm.historyTexts.count])
+                        .font(.patrickHand)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: 0.75 * geo.size.width)
+                        .padding(.bottom)
+                        .foregroundStyle(Color.darkBrown)
+                }
+                .padding(.horizontal)
                 
                 Spacer()
                 
-                Text(historyPassVm.historyTexts[historyPassVm.indexHistoryMoment % historyPassVm.historyTexts.count])
-                    .font(.patrickHand)
-                    .multilineTextAlignment(.leading)
-                    .frame(maxWidth: 0.75 * geo.size.width)
-                    .padding(.bottom)
-                
-                Spacer()
-                
+                // Next
                 Button {
+                    historyPassVm.historyVoice[historyPassVm.indexHistoryMoment]?.stop()
+                    stopAudioLoop()
                     self.historyPassVm.handleHistoryMoment(movement: .next)
                     
                 } label: {}
                     .buttonStyle(PressableButtonStyle(normalImage: "PassRightBtn", pressedImage: "PassRightBtnPressed", width: geo.size.height * 0.06))
             }
             .frame(width: geo.size.width * 0.96)
-            
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .audioDidFinish)) { _ in
+            stopAudioLoop()
         }
     }
 }

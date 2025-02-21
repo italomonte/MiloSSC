@@ -24,7 +24,7 @@ struct CoordinatorView: View {
             get: {coordinator.path},
             set: {coordinator.path = $0}
         )){
-            coordinator.build(page: .CountingPigs)
+            coordinator.build(page: .InitialMenuView)
                 .navigationDestination(for: AppPages.self) { page in
                     coordinator.build(page: page)
                 }

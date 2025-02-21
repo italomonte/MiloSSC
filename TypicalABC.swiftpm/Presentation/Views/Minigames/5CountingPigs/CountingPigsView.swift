@@ -2,43 +2,59 @@ import SwiftUI
 import PencilKit
 
 struct CountingPigsView: View {
+    
+    @Environment(\.dismiss) var dismiss
+    @State private var isSettingOpen: Bool = false
+
     @State private var canvasView = PKCanvasView()
     @State private var recognizedNumber: String = "Desenhe um número"
-    @State private var imageDrawned: UIImage?
+    
+    @State private var hasDrawn: Bool = true
+    @State private var hasDrawnCorrect: Bool = false
     
     let classifier = MNISTClassifierHandler() // Modelo de ML
-
+    
     var body: some View {
-        
-        ZStack{
-            
-            ARViewContainer()
-                .ignoresSafeArea()
-            
-//            VStack {
-//                PencilKitNumberView(canvasView: $canvasView)
-//                    .frame(width: 200, height: 200)
-//                    .border(Color.gray, width: 4)
-//                
-//                Button("Identificar Número") {
-//                    classifyDrawing()
-//                }
-//                .padding()
-//                
-//                Text("Número identificado: \(recognizedNumber)")
-//                    .font(.title)
-//                    .bold()
-//                
-//                Text("Número desenhadao")
-//                Image(uiImage: imageDrawned ?? UIImage())
-//                    .border(.red)
-//            }
-        }
-    }
+        GeometryReader { geo in
+            ZStack{
+                
+                //            ARViewContainer()
+                //                .ignoresSafeArea()
+                
+                Color.black
+                    .ignoresSafeArea()
+                
+                VStack{
+                    Spacer()
+                    ZStack{
+                        
+                        if !hasDrawn {
+                            DrawingPigsCountView(geo: geo, canvasView: $canvasView)
+                            
+                        } else if hasDrawn && !hasDrawnCorrect {
+                            // tela de derrota
+                            LosingPigsCountView(geo: geo, canvasView: $canvasView, hasDrawn: $hasDrawn)
+                            
+                        } else if hasDrawn && hasDrawnCorrect {
+                            // tela de winning
+                            WinningPigsCountView(geo: geo, canvasView: $canvasView, hasDrawn: $hasDrawn)
+                        }
+                        
+                    }
 
+                }
+            }
+            
+            UIButtons(buttons: [
+                ("CloseBtn", {dismiss()}),
+                ("SettingsBtn", {isSettingOpen = true}),
+            ], geo: geo)
+        }
+        .navigationBarBackButtonHidden(true)    
+    }
+    
     private func classifyDrawing() {
         let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0)
-        self.imageDrawned = image
         
         if let result = classifier?.classify(image: image) {
             recognizedNumber = result
@@ -47,3 +63,4 @@ struct CountingPigsView: View {
         }
     }
 }
+

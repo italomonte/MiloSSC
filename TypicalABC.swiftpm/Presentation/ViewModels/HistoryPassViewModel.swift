@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 enum HistoryMovement {
     case next
@@ -17,7 +18,7 @@ struct CardAnimation {
     var framesPerSecond: Int
 }
 
-class HistoryPassViewModel: ObservableObject {
+class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     
     
     @Published var indexHistoryStep: Int = 0
@@ -30,9 +31,13 @@ class HistoryPassViewModel: ObservableObject {
     @Published var goToCallMinigames: Bool = false
     @Published var framesPerSecond: Int = 0
     
-    init() {
-        registerCustomFont()
+    @Published var historyVoice: [AVAudioPlayer?] = []
 
+    let voiceSeconds = [9, 16, 13, 9, 7, 4, 15, 22]
+    
+    override init() {
+        super.init()
+        setupAudio()
     }
     
     private var historyBgMoments: [[String]] = [
@@ -46,33 +51,7 @@ class HistoryPassViewModel: ObservableObject {
     
     var historyCards: [CardAnimation] = [
         CardAnimation(frames: ["H7-Opera-1", "H7-Opera-2"], framesPerSecond: 1),
-        CardAnimation(frames: ["H7-espaco-1",
-                               "H7-espaco-2",
-                               "H7-espaco-3",
-                               "H7-espaco-4",
-                               "H7-espaco-5",
-                               "H7-espaco-6",
-                               "H7-espaco-7",
-                               "H7-espaco-8",
-                               "H7-espaco-9",
-                               "H7-espaco-10",
-                               "H7-espaco-11",
-                               "H7-espaco-12",
-                               "H7-espaco-13",
-                               "H7-espaco-14",
-                               "H7-espaco-15",
-                               "H7-espaco-16",
-                               "H7-espaco-17",
-                               "H7-espaco-18",
-                               "H7-espaco-19",
-                               "H7-espaco-20",
-                               "H7-espaco-21",
-                               "H7-espaco-22",
-                               "H7-espaco-23",
-                               "H7-espaco-24",
-                               "H7-espaco-25",
-                               "H7-espaco-26",
-                              ], framesPerSecond: 13),
+        CardAnimation(frames: ["H7-espaco-1",], framesPerSecond: 13),
         CardAnimation(frames: ["H8-Monster-1", "H8-Monster-2"], framesPerSecond: 1),
         CardAnimation(frames: ["H8-Wizard-1", "H8-Wizard-2", "H8-Wizard-3", "H8-Wizard-4"], framesPerSecond: 1),
     ]
@@ -90,19 +69,6 @@ class HistoryPassViewModel: ObservableObject {
         
     ]
     
-    func registerCustomFont() {
-        guard let fontURL = Bundle.main.url(forResource: "PatrickHand-Regular", withExtension: "ttf"),
-              let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
-              let font = CGFont(fontDataProvider) else {
-            fatalError("Erro ao carregar a fonte")
-        }
-
-        var error: Unmanaged<CFError>?
-        if !CTFontManagerRegisterGraphicsFont(font, &error) {
-            print("Erro ao registrar a fonte: \(error!.takeRetainedValue())")
-        }
-    }
-
     // Chamar a função para registrar a fonte
     
     func handleHistoryMoment(movement: HistoryMovement) {
@@ -142,6 +108,34 @@ class HistoryPassViewModel: ObservableObject {
         }
     }
     
+    private func setupAudio() {
+            for i in 1...10 {
+                if let soundURL = Bundle.main.url(forResource: "H" + String(i), withExtension: "m4a") {
+                    do {
+                        let audio = try AVAudioPlayer(contentsOf: soundURL)
+                        audio.delegate = self // Define o delegate
+                        audio.prepareToPlay()
+                        
+                        historyVoice.append(audio)
+                    } catch {
+                        print("Erro ao carregar o áudio: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    
+    // Função chamada quando o áudio termina
+        func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .audioDidFinish, object: nil)
+            }
+        }
+    
+}
+
+// Notificação para detectar quando o áudio termina
+extension Notification.Name {
+    static let audioDidFinish = Notification.Name("audioDidFinish")
 }
 
 

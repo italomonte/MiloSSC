@@ -24,10 +24,11 @@ let package = Package(
             accentColor: .presetColor(.mint),
             supportedDeviceFamilies: [
                 .pad,
+                .phone
             ],
             supportedInterfaceOrientations: [
                 .landscapeRight,
-                .landscapeLeft,
+                .landscapeLeft
             ],
             capabilities: [
                 .camera(purposeString: "teste")

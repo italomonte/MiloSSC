@@ -20,11 +20,17 @@ struct ExploringAlphabetVictoryView: View {
         GeometryReader { geo in
             ZStack{
                 
-                // Background
-                Image("alphabetVictoryBg")
+                Image("alphabetBg")
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
+                
+                Image("symbolsBgAlphabet")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: calculatePercent(dimensionValue: 1900, dimension: .width, geo: geo))
+                    .offset(y: calculatePercent(dimensionValue: -100, dimension: .height, geo: geo))
+                
                 
                 VStack(spacing: 20) {
                     Image("youDidIt")
@@ -59,7 +65,7 @@ struct ExploringAlphabetVictoryView: View {
                 // UI
                 UIButtons(buttons: [
                     ("SettingsBtn", {isSettingOpen = true})
-                ])
+                ], geo: geo)
                 
                 
                 

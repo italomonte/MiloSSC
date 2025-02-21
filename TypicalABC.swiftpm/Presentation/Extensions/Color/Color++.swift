@@ -25,4 +25,12 @@ extension Color {
     static var lightGreen: Color {
          Color(red: 219/255, green: 226/255, blue: 213/255)
     }
+    
+    static var lightBlue: Color {
+         Color(red: 50/255, green: 129/255, blue: 196/255)
+    }
+    
+    static var darkBrown: Color {
+         Color(red: 35/255, green: 12/255, blue: 0/255)
+    }
 }

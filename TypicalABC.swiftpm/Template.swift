@@ -30,7 +30,7 @@ struct Template: View {
                 UIButtons(buttons: [
                     ("CloseBtn", {dismiss()}),
                     ("SettingsBtn", {isSettingOpen = true})
-                ])
+                ], geo: geo)
                 
                 
                 
