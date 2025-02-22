@@ -5,11 +5,13 @@ import SwiftUI
 struct InitialMenuView: View {
     
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var audioMng: AudioManager
+    
     @Environment(\.dismiss) var dismiss
+    
     @State private var images = ["InitialBg1", "InitialBg2"]
     @State private var indexMenuStep = 0
     @State private var bgFramesPerSecond = 1
-
     @State var isSettingOpen = false
     
     func registerCustomFont() {
@@ -27,6 +29,8 @@ struct InitialMenuView: View {
     
     init() {
         registerCustomFont()
+        audioMng.setupGenericAudio(audioFilename: .GenericFeedback)
+        audioMng.setupHistoryVoices(index: 0)
     }
     
     var body: some View {
@@ -50,7 +54,12 @@ struct InitialMenuView: View {
                     
                     // UI Button Settings
                     UIButtons(buttons: [
-                        ("InfoBtn", {coordinator.push(page: .InfoView)}),
+                        ("InfoBtn", {
+                            coordinator.push(page: .InfoView)
+                            let audioBtn = audioMng.genericAudios.first(where: { $0.name == .GenericFeedback })
+                            audioBtn?.player?.play()
+                            
+                        }),
                         ("SettingsBtn", {isSettingOpen = true}),
                     ], geo: geo)
                     .padding(.vertical)

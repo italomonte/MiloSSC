@@ -69,12 +69,15 @@ struct ExploringAlphabetView: View {
                                 Button {canvasPencilView.drawing = PKDrawing()}
                                 label: { }
                                     .buttonStyle(PressableButtonStyle(normalImage: "ResetBtn", pressedImage: "ResetBtnPressed", width: calculatePercent(dimensionValue: 120, dimension: .width, geo: geo)))
+                                
                                 Spacer()
                                 
                                 Button {
                                     alphabetVm.alphabet[letterSelected - 65].done = true
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                        coordinator.push(page: .ExploringTheAlphabetVictoryView)
+                                        if (alphabetVm.alphabet[0].done && alphabetVm.alphabet[1].done && alphabetVm.alphabet[2].done){
+                                            coordinator.push(page: .ExploringTheAlphabetVictoryView)
+                                        }
                                     }
                                 }
                                 label: { }
@@ -120,24 +123,34 @@ struct ExploringAlphabetView: View {
                         }
                     }
                     
-                    
                 }
                 .offset(y: calculatePercent(dimensionValue: -50, dimension: .height, geo: geo))
                 
-                // Scrrol Alphabet
+                // Scroll Alphabet
                 VStack{
                     Spacer()
                     ScrollView(.horizontal){
                         HStack(spacing: -1) {
                             ForEach(alphabetVm.alphabet) { letter in
-                                LetterCard( letter: letter, geo: geo, letterSelected: $letterSelected)
+                                LetterCard(letter: letter, geo: geo, letterSelected: $letterSelected)
                                     .onTapGesture {
-                                        letterSelected = letter.id
-                                        canvasPencilView.drawing = PKDrawing()
+                                        if letter.id >= 65 && letter.id <= 67 {
+                                            alphabetVm.alphabet[letterSelected - 65].drawning = canvasPencilView.drawing
+                                            letterSelected = letter.id
+                                            
+                                            if !letter.done {
+                                                alphabetVm.alphabet[letter.id - 65].drawning = PKDrawing()
+                                            }
+                                            
+                                            canvasPencilView.drawing = alphabetVm.alphabet[letterSelected - 65].drawning
+
+
+                                        }
                                     }
                             }
                         }
                     }
+                    .scrollIndicators(.hidden)
                     .padding(.bottom)
                 }
                 

@@ -11,7 +11,8 @@ import PencilKit
 struct DrawingPigsCountView: View {
     
     let geo: GeometryProxy
-    @Binding var canvasView: PKCanvasView
+    @ObservedObject var countingPigsVm: CountingPigsViewModel
+    @Binding var isMinimizeModal: Bool
     
     var body: some View {
         ZStack {
@@ -19,6 +20,7 @@ struct DrawingPigsCountView: View {
             Image("pigsBg")
                 .resizable()
                 .scaledToFit()
+                .frame(maxWidth: geo.size.width, maxHeight: calculatePercent(dimensionValue: 739, dimension: .height, geo: geo))
             
             VStack {
                 
@@ -26,9 +28,23 @@ struct DrawingPigsCountView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: calculatePercent(dimensionValue: 72, dimension: .width, geo: geo))
-                    .padding(.top, calculatePercent(dimensionValue: 48, dimension: .height, geo: geo))
+                    .padding(.vertical)
+                    .gesture (
+                        DragGesture()
+                            .onChanged { value in
+                                if value.translation.height > 100 {
+                                    withAnimation {
+                                        isMinimizeModal = true
+                                    }
+                                } else if value.translation.height < 100 {
+                                    withAnimation {
+                                        isMinimizeModal = false
+
+                                    }
+                                }
+                            }
+                    )
                 
-                Spacer()
                 
                 Text("How many pigs do you see?")
                     .font(.patrickHandBigger)
@@ -43,18 +59,23 @@ struct DrawingPigsCountView: View {
                         .frame(width: calculatePercent(dimensionValue: 405, dimension: .width, geo: geo))
                         .allowsHitTesting(false)
                     
-                    PencilKitNumberView(canvasView: $canvasView)
+                    PencilKitNumberView(countingPigsVm: countingPigsVm)
                         .frame(width: calculatePercent(dimensionValue: 405, dimension: .width, geo: geo),
                                height:
                                 calculatePercent(dimensionValue: 405, dimension: .height, geo: geo)
                         )
+                        .onAppear {
+                            print("height: \(calculatePercent(dimensionValue: 405, dimension: .height, geo: geo))")
+                            print("width: \(calculatePercent(dimensionValue: 405, dimension: .width, geo: geo))")
+                        }
+                    
                 }
                 .padding(.bottom, calculatePercent(dimensionValue: 50, dimension: .height, geo: geo))
             }
+
         }
         .frame(maxWidth: geo.size.width, maxHeight: calculatePercent(dimensionValue: 739, dimension: .height, geo: geo))
         .background(.white)
-
 
     }
 }

@@ -47,6 +47,7 @@ struct LosingPigsCountView: View {
                 Button {
                     withAnimation {
                         hasDrawn = false
+                        canvasView.drawing = .init()
                     }
                 } label: {}
                     .buttonStyle(PressableButtonStyle(normalImage: "TryAgainBtn", pressedImage: "TryAgainBtnPressed", width: 350))

@@ -13,6 +13,7 @@ struct CoordinatorView: View {
     
 
     @ObservedObject var coordinator: Coordinator
+    @ObservedObject var audioMng: AudioManager = .init()
 
     init(coordinator: Coordinator) {
         self.coordinator = coordinator
@@ -31,5 +32,6 @@ struct CoordinatorView: View {
                 
         }
         .environmentObject(coordinator)
+        .environmentObject(audioMng)
     }
 }

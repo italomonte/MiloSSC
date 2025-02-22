@@ -21,8 +21,12 @@ class MNISTClassifierHandler {
         }
     }
     
-    func classify(image: UIImage) -> String? {
+    func classify(image: UIImage) -> (String?, UIImage)? {
+        
+        
+        
         guard let resizedImage = image.resize(to: CGSize(width: 28, height: 28)),
+                
               let pixelBuffer = resizedImage.toCVPixelBuffer() else {
             print("Falha ao processar a imagem.")
             return nil
@@ -30,7 +34,7 @@ class MNISTClassifierHandler {
         
         do {
             let prediction = try model.prediction(image: pixelBuffer)
-            return String(prediction.classLabel)
+            return (String(prediction.classLabel), resizedImage)
         } catch {
             print("Erro ao realizar a previsão: \(error)")
             return nil
@@ -80,3 +84,12 @@ extension UIImage {
     }
 }
 
+// Uso:
+//if let classifier = MNISTClassifierHandler(),
+//   let image = UIImage(named: "digit.png") {
+//    if let result = classifier.classify(image: image) {
+//        print("Número detectado: \(result)")
+//    } else {
+//        print("Não foi possível classificar a imagem.")
+//    }
+//}

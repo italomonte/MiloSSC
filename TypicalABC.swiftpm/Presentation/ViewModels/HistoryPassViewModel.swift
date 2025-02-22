@@ -18,7 +18,7 @@ struct CardAnimation {
     var framesPerSecond: Int
 }
 
-class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
+class HistoryPassViewModel: NSObject, ObservableObject {
     
     
     @Published var indexHistoryStep: Int = 0
@@ -31,14 +31,8 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published var goToCallMinigames: Bool = false
     @Published var framesPerSecond: Int = 0
     
-    @Published var historyVoice: [AVAudioPlayer?] = []
-
-    let voiceSeconds = [9, 16, 13, 9, 7, 4, 15, 22]
     
-    override init() {
-        super.init()
-        setupAudio()
-    }
+
     
     private var historyBgMoments: [[String]] = [
         ["H1_1", "H1_2"],
@@ -77,7 +71,6 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
             indexHistoryStep = 0
 
             if indexHistoryMoment <= 5 {
-                print("change bg")
                 historyBgMoment = historyBgMoments[indexHistoryMoment % historyBgMoments.count]
 
             } else if indexHistoryMoment >= 6 { // muda os primeiros cards para os proximos
@@ -93,7 +86,6 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
         } else if movement == .previous && indexHistoryMoment > 0 {
             indexHistoryStep = 0
             indexHistoryMoment -= 1
-            print(indexHistoryMoment)
             
             if indexHistoryMoment == 5 { // segundos cards
                 cardOneStep = 0
@@ -107,35 +99,9 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
 
         }
     }
-    
-    private func setupAudio() {
-            for i in 1...10 {
-                if let soundURL = Bundle.main.url(forResource: "H" + String(i), withExtension: "m4a") {
-                    do {
-                        let audio = try AVAudioPlayer(contentsOf: soundURL)
-                        audio.delegate = self // Define o delegate
-                        audio.prepareToPlay()
-                        
-                        historyVoice.append(audio)
-                    } catch {
-                        print("Erro ao carregar o áudio: \(error.localizedDescription)")
-                    }
-                }
-            }
-        }
-    
-    // Função chamada quando o áudio termina
-        func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: .audioDidFinish, object: nil)
-            }
-        }
+
     
 }
 
-// Notificação para detectar quando o áudio termina
-extension Notification.Name {
-    static let audioDidFinish = Notification.Name("audioDidFinish")
-}
 
 

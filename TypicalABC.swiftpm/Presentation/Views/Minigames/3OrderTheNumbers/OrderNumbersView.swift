@@ -80,8 +80,8 @@ struct OrderNumbersView: View {
         .navigationBarBackButtonHidden(true)
         .onChange(of: isOrdered) { oldValue, newValue in
             if isOrdered {
-                coordinator.push(page: .OrderNumbersVictoryView)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    coordinator.push(page: .OrderNumbersVictoryView)
                     orderNumbersVm.shuffleCards()
                 }
             }

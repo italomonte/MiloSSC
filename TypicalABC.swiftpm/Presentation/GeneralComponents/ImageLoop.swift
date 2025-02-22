@@ -27,7 +27,6 @@ struct ImageLoop: View {
                 startImageLoop()
             }
             .onChange(of: framesPerSecond) { oldValue, newValue in
-                print("framesPerSecond mudou para: \(newValue)")
                 startImageLoop()
             }
             .onDisappear {

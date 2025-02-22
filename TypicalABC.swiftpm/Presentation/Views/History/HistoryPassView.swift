@@ -9,11 +9,15 @@ import SwiftUI
 
 struct HistoryPassView: View {
     
-    @Environment(\.dismiss) var dismiss
-    @State var isSettingOpen = false
-
+    
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var audioMng: AudioManager
+    
+    @Environment(\.dismiss) var dismiss
+    
     @ObservedObject var historyPassVm = HistoryPassViewModel()
+
+    @State var isSettingOpen = false
     @State var bgFramesPerSecond: Int = 1
         
     var body: some View {

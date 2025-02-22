@@ -1,66 +1,80 @@
 import SwiftUI
 import PencilKit
+import UIKit
 
 struct CountingPigsView: View {
     
     @Environment(\.dismiss) var dismiss
     @State private var isSettingOpen: Bool = false
-
-    @State private var canvasView = PKCanvasView()
-    @State private var recognizedNumber: String = "Desenhe um número"
+    @State var isMinimizeModal: Bool = false
     
-    @State private var hasDrawn: Bool = true
-    @State private var hasDrawnCorrect: Bool = false
-    
-    let classifier = MNISTClassifierHandler() // Modelo de ML
+    @ObservedObject var countingPigsVm = CountingPigsViewModel()
     
     var body: some View {
         GeometryReader { geo in
             ZStack{
                 
-                //            ARViewContainer()
-                //                .ignoresSafeArea()
-                
-                Color.black
+                ARViewContainer()
                     .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation {
+                            isMinimizeModal = true
+                        }
+                    }
                 
                 VStack{
                     Spacer()
                     ZStack{
                         
-                        if !hasDrawn {
-                            DrawingPigsCountView(geo: geo, canvasView: $canvasView)
+                        if !countingPigsVm.hasDrawn {
+                            DrawingPigsCountView(geo: geo, countingPigsVm: countingPigsVm, isMinimizeModal: $isMinimizeModal)
                             
-                        } else if hasDrawn && !hasDrawnCorrect {
+                        } else if countingPigsVm.hasDrawn && !countingPigsVm.hasDrawnCorrect {
                             // tela de derrota
-                            LosingPigsCountView(geo: geo, canvasView: $canvasView, hasDrawn: $hasDrawn)
+                            LosingPigsCountView(geo: geo, canvasView: $countingPigsVm.canvasView, hasDrawn: $countingPigsVm.hasDrawn)
                             
-                        } else if hasDrawn && hasDrawnCorrect {
+                        } else if countingPigsVm.hasDrawn && countingPigsVm.hasDrawnCorrect {
                             // tela de winning
-                            WinningPigsCountView(geo: geo, canvasView: $canvasView, hasDrawn: $hasDrawn)
+                            WinningPigsCountView(geo: geo, canvasView: $countingPigsVm.canvasView, hasDrawn: $countingPigsVm.hasDrawn)
                         }
                         
                     }
-
+                    .offset(y: isMinimizeModal ? geo.size.height * 0.2 : 0)
+                    
                 }
+                .onTapGesture {
+                    withAnimation {
+                        isMinimizeModal = false
+                    }
+                }
+                
+                UIButtons(buttons: [
+                    ("CloseBtn", {dismiss()}),
+                    ("SettingsBtn", {isSettingOpen = true}),
+                ], geo: geo)
             }
-            
-            UIButtons(buttons: [
-                ("CloseBtn", {dismiss()}),
-                ("SettingsBtn", {isSettingOpen = true}),
-            ], geo: geo)
+            .navigationBarBackButtonHidden(true)
         }
-        .navigationBarBackButtonHidden(true)    
+        
     }
     
-    private func classifyDrawing() {
-        let image = canvasView.drawing.image(from: canvasView.bounds, scale: 1.0)
-        
-        if let result = classifier?.classify(image: image) {
-            recognizedNumber = result
-        } else {
-            recognizedNumber = "Erro"
-        }
-    }
+    
 }
 
+
+//extension PKCanvasView {
+//
+//    public func imageWithWhiteBackground(from rect: CGRect, scale: CGFloat = 1) -> UIImage {
+//        let renderer = UIGraphicsImageRenderer(size: rect.size)
+//
+//        return renderer.image { context in
+//            let cgContext = context.cgContext
+//
+//            UIColor.black.setFill()
+//            cgContext.fill(rect)
+//
+//            let drawingImage = self.drawing.image(from: rect, scale: scale)
+//            drawingImage.draw(in: rect)
+//        }
+//    }
+//}

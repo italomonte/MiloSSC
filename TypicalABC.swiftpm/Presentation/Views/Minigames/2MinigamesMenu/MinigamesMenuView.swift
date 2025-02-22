@@ -38,7 +38,8 @@ struct MinigamesMenuView: View {
                                             .scaledToFit()
                                             .frame(width: geo.size.width * 0.33)
                                         
-                                        Text("Order the number fluffies")
+                                        Text(index == 0 ? "Order the number fluffies" : (index == 1 ? "Exploring the alphabet" : "Counting pigs"))
+                                            .font(.patrickHand)
                                             .foregroundStyle(.white)
                                     }
                                 }
@@ -55,7 +56,7 @@ struct MinigamesMenuView: View {
                 
                 // UI
                 UIButtons(buttons: [
-                    ("CloseBtn", {dismiss()}),
+                    ("InfoBtn", {coordinator.push(page: .InfoView)}),
                     ("StoryBtn", {coordinator.popTo(page: 0)}),
                     ("SettingsBtn", {isSettingOpen = true})
                 ], geo: geo)
