@@ -5,6 +5,9 @@ import UIKit
 struct CountingPigsView: View {
     
     @Environment(\.dismiss) var dismiss
+    
+    @EnvironmentObject var audioManager: AudioManager
+    
     @State private var isSettingOpen: Bool = false
     @State var isMinimizeModal: Bool = false
     
@@ -54,10 +57,13 @@ struct CountingPigsView: View {
                 ], geo: geo)
             }
             .navigationBarBackButtonHidden(true)
+            .onAppear{
+                audioManager.setupAudios(from: .init(filename: [.promptCounting], fileExtension: .m4a, volume: 1))
+            }
         }
         
     }
-    
+
     
 }
 

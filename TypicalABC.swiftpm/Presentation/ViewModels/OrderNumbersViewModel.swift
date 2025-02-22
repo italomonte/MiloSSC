@@ -11,6 +11,12 @@ class OrderNumbersViewModel: ObservableObject {
     
     @Published var numbersCards: [NumberCard]
     
+    @Published  var soundVolume = 1
+    @Published  var isPlayingSound = false
+    @Published  var isPlayingNarration = false
+    @Published  var timerImage: Timer?
+    @Published  var timerAudio: Timer?
+    
     init() {
         
         func getHeightPercent(for height: CGFloat) -> CGFloat {

@@ -57,7 +57,7 @@ struct MinigamesMenuView: View {
                 // UI
                 UIButtons(buttons: [
                     ("InfoBtn", {coordinator.push(page: .InfoView)}),
-                    ("StoryBtn", {coordinator.popTo(page: 0)}),
+                    ("StoryBtn", {coordinator.popTo(page: 1)}),
                     ("SettingsBtn", {isSettingOpen = true})
                 ], geo: geo)
             }

@@ -20,6 +20,12 @@ struct LetterInfo: Identifiable {
 
 class AlphabetViewModel: ObservableObject {
     
+    @Published  var soundVolume = 1
+    @Published  var isPlayingSound = false
+    @Published  var isPlayingNarration = false
+    @Published  var timerImage: Timer?
+    @Published  var timerAudio: Timer?
+    
     @Published var alphabet: [LetterInfo] = [
         LetterInfo(id: 65, widthPercent: 705, offset: .init(width: 0, height: 12), directionPercent: 500, directionOffset: 20, done: false, drawning: PKDrawing()),
         LetterInfo(id: 66, widthPercent: 552, offset: .init(width: 0, height: -8), directionPercent: 450, directionOffset: -10, done: false, drawning: PKDrawing()),

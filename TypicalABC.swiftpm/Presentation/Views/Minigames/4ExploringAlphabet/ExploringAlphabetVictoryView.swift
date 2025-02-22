@@ -13,6 +13,8 @@ struct ExploringAlphabetVictoryView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var audioManager: AudioManager
+    
     @State var isSettingOpen = false
 
     
@@ -53,6 +55,8 @@ struct ExploringAlphabetVictoryView: View {
                     // Try Again Button
                     Button {
                         dismiss()
+                        audioManager.sounds.first(where: {$0.filename == .victoryAlphabet})?.player?.stop()
+
                     } label: {}
                         .buttonStyle(PressableButtonStyle(normalImage: "KeepPlayingBtn", pressedImage: "KeepPlayingBtnPressed", width: 350))
                         .padding(.top, 30)
@@ -72,6 +76,14 @@ struct ExploringAlphabetVictoryView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.winningFeedback], fileExtension: .wav, volume: 1))
+            audioManager.setupAudios(from: .init(filename: [.victoryAlphabet], fileExtension: .m4a, volume: 1))
+            audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                audioManager.sounds.first(where: {$0.filename == .victoryAlphabet})?.player?.play()
+            }
+        }
         
     }
     

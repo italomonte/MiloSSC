@@ -7,8 +7,12 @@ import PencilKit
 struct ExploringAlphabetView: View {
     
     @Environment(\.dismiss) var dismiss
-    @State var isSettingOpen = false
+    
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var audioManager: AudioManager
+    
+    
+    @State var isSettingOpen = false
     
     @State var letterSelected: Int  = 65
     @State var canvasPencilView: PKCanvasView = PKCanvasView()
@@ -66,7 +70,10 @@ struct ExploringAlphabetView: View {
                         
                         VStack{
                             HStack{
-                                Button {canvasPencilView.drawing = PKDrawing()}
+                                Button {canvasPencilView.drawing = PKDrawing()
+                                    audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+
+                                }
                                 label: { }
                                     .buttonStyle(PressableButtonStyle(normalImage: "ResetBtn", pressedImage: "ResetBtnPressed", width: calculatePercent(dimensionValue: 120, dimension: .width, geo: geo)))
                                 
@@ -79,6 +86,8 @@ struct ExploringAlphabetView: View {
                                             coordinator.push(page: .ExploringTheAlphabetVictoryView)
                                         }
                                     }
+                                    audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+
                                 }
                                 label: { }
                                     .buttonStyle(PressableButtonStyle(normalImage: "CheckBtn", pressedImage: "CheckBtnPressed", width: calculatePercent(dimensionValue: 120, dimension: .width, geo: geo)))
@@ -92,24 +101,7 @@ struct ExploringAlphabetView: View {
                             width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo),
                             height: calculatePercent(dimensionValue: 1100, dimension: .height, geo: geo)
                         )
-                        
-                        VStack{
-                            Spacer()
-
-                            HStack{
-                                Spacer()
-
-                                
-                                
-                            }.padding()
-
-                        }
-                        .padding()
-                        .frame(
-                            width: calculatePercent(dimensionValue: 980, dimension: .width, geo: geo),
-                            height: calculatePercent(dimensionValue: 1100, dimension: .height, geo: geo)
-                        )
-
+                    
                         
                     }
                     
@@ -128,6 +120,15 @@ struct ExploringAlphabetView: View {
                 
                 // Scroll Alphabet
                 VStack{
+                    
+                    VStack {
+                        soundButton
+                        Text("Draw the letters of the alphabet following the arrows.")
+                            .font(.patrickHand)
+                            .foregroundStyle(.white)
+                            .frame(width: calculatePercent(dimensionValue: 1543, dimension: .width, geo: geo))
+                    }
+                    
                     Spacer()
                     ScrollView(.horizontal){
                         HStack(spacing: -1) {
@@ -163,8 +164,66 @@ struct ExploringAlphabetView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.genericFeedback], fileExtension: .wav, volume: 1))
+            audioManager.setupAudios(from: .init(filename: [.promptAlphabet], fileExtension: .m4a, volume: 1))
+        }
     }
     
+    private var soundButton: some View {
+        Image(alphabetVm.isPlayingSound ? "soundBtn\(alphabetVm.soundVolume)" : "soundBtn2")
+            .resizable()
+            .scaledToFit()
+            .frame(width: UIScreen.main.bounds.width * 0.05)
+            .onTapGesture { toggleSound() }
+    }
+    
+    private func toggleSound() {
+        if alphabetVm.isPlayingSound {
+            stopCurrentAudio()
+        } else {
+            playCurrentAudio()
+        }
+    }
+    
+    
+    private func playCurrentAudio() {
+        audioManager.sounds.first(where: { $0.filename == .promptAlphabet })?.player?.play()
+        startAudioLoop()
+    }
+    
+    private func stopCurrentAudio() {
+        audioManager.sounds.first(where: { $0.filename == .promptAlphabet })?.player?.stop()
+        stopAudioLoop()
+    }
+    
+    private func startAudioLoop() {
+        stopAudioLoop()
+        alphabetVm.isPlayingSound = true
+        startImageLoop()
+        alphabetVm.timerAudio = Timer.scheduledTimer(withTimeInterval: TimeInterval(4), repeats: false) { _ in
+            stopAudioLoop()
+        }
+    }
+    
+    private func stopAudioLoop() {
+        alphabetVm.timerAudio?.invalidate()
+        alphabetVm.timerAudio = nil
+        alphabetVm.isPlayingSound = false
+        alphabetVm.soundVolume = 1
+    }
+    
+    private func startImageLoop() {
+        stopImageLoop()
+        alphabetVm.timerImage = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+            alphabetVm.soundVolume = (alphabetVm.soundVolume + 1) % 3
+        }
+    }
+    
+    private func stopImageLoop() {
+        alphabetVm.timerImage?.invalidate()
+        alphabetVm.timerImage = nil
+        alphabetVm.soundVolume = 1
+    }
 }
 

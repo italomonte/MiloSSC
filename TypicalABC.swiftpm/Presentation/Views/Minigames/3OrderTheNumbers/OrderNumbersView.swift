@@ -14,6 +14,8 @@ struct OrderNumbersView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var audioManager: AudioManager
+    
     @StateObject var orderNumbersVm = OrderNumbersViewModel()
     @State var isSettingOpen = false
 
@@ -38,6 +40,7 @@ struct OrderNumbersView: View {
                 ZStack (alignment: .bottom){
                     VStack {
                         
+                        soundButton
                         Text("Drag the fluffies into numerical order, from smallest to biggest. Colors and sizes can help you figure out the order.")
                             .font(.patrickHandBigger)
                             .multilineTextAlignment(.center)
@@ -86,6 +89,67 @@ struct OrderNumbersView: View {
                 }
             }
         }
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.promptFluffies], fileExtension: .m4a, volume: 1))
+        }
+        
+    }
+    
+    
+    private var soundButton: some View {
+        Image(orderNumbersVm.isPlayingSound ? "soundBtn\(orderNumbersVm.soundVolume)" : "soundBtn2")
+            .resizable()
+            .scaledToFit()
+            .frame(width: UIScreen.main.bounds.width * 0.05)
+            .onTapGesture { toggleSound() }
+    }
+    
+    private func toggleSound() {
+        if orderNumbersVm.isPlayingSound {
+            stopCurrentAudio()
+        } else {
+            playCurrentAudio()
+        }
+    }
+    
+    
+    private func playCurrentAudio() {
+        audioManager.sounds.first(where: { $0.filename == .promptFluffies })?.player?.play()
+        startAudioLoop()
+    }
+    
+    private func stopCurrentAudio() {
+        audioManager.sounds.first(where: { $0.filename == .promptFluffies })?.player?.stop()
+        stopAudioLoop()
+    }
+    
+    private func startAudioLoop() {
+        stopAudioLoop()
+        orderNumbersVm.isPlayingSound = true
+        startImageLoop()
+        orderNumbersVm.timerAudio = Timer.scheduledTimer(withTimeInterval: TimeInterval(4), repeats: false) { _ in
+            stopAudioLoop()
+        }
+    }
+    
+    private func stopAudioLoop() {
+        orderNumbersVm.timerAudio?.invalidate()
+        orderNumbersVm.timerAudio = nil
+        orderNumbersVm.isPlayingSound = false
+        orderNumbersVm.soundVolume = 1
+    }
+    
+    private func startImageLoop() {
+        stopImageLoop()
+        orderNumbersVm.timerImage = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { _ in
+            orderNumbersVm.soundVolume = (orderNumbersVm.soundVolume + 1) % 3
+        }
+    }
+    
+    private func stopImageLoop() {
+        orderNumbersVm.timerImage?.invalidate()
+        orderNumbersVm.timerImage = nil
+        orderNumbersVm.soundVolume = 1
     }
     
     // MARK: - Função para mover os itens

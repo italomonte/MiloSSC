@@ -10,8 +10,10 @@ import SwiftUI
 struct InfoView: View {
     
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var audioManager: AudioManager
     
     var body: some View {
+        
         GeometryReader { geo in
             ZStack {
                 ScrollView {
@@ -37,6 +39,8 @@ struct InfoView: View {
                     HStack (spacing: 20){
                         Button {
                             dismiss()
+                            audioManager.sounds.first(where: { $0.filename == .genericFeedback})?.player?.play()
+
                         }
                         label: { }
                             .buttonStyle(PressableButtonStyle(normalImage: "PassLeftBtn", pressedImage: "PassLeftBtnPressed", width: calculatePercent(dimensionValue: 174, dimension: .width, geo: geo)))

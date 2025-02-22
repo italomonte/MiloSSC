@@ -10,9 +10,13 @@ import PencilKit
 
 struct LosingPigsCountView: View {
     
+    @EnvironmentObject var audioManager: AudioManager
+    
     let geo: GeometryProxy
     @Binding var canvasView: PKCanvasView
     @Binding var hasDrawn: Bool
+    
+
 
     var body: some View {
         ZStack {
@@ -49,6 +53,8 @@ struct LosingPigsCountView: View {
                         hasDrawn = false
                         canvasView.drawing = .init()
                     }
+                    audioManager.sounds.first(where: {$0.filename == .ohNoCounting})?.player?.stop()
+
                 } label: {}
                     .buttonStyle(PressableButtonStyle(normalImage: "TryAgainBtn", pressedImage: "TryAgainBtnPressed", width: 350))
                     .padding(.bottom, 30)
@@ -56,6 +62,11 @@ struct LosingPigsCountView: View {
             }
         }
         .frame(maxWidth: geo.size.width, maxHeight: calculatePercent(dimensionValue: 828, dimension: .height, geo: geo))
+        
         .background(.white)
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.ohNoCounting], fileExtension: .m4a, volume: 1))
+            audioManager.sounds.first(where: {$0.filename == .ohNoCounting})?.player?.play()
+        }
     }
 }

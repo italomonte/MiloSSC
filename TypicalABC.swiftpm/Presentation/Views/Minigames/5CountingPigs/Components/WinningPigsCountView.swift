@@ -9,6 +9,8 @@ import SwiftUI
 import PencilKit
 
 struct WinningPigsCountView: View {
+    
+    @EnvironmentObject var audioManager: AudioManager
         
     let geo: GeometryProxy
     
@@ -54,6 +56,8 @@ struct WinningPigsCountView: View {
                     withAnimation {
                         hasDrawn = false
                     }
+                    audioManager.sounds.first(where: {$0.filename == .victoryCounting})?.player?.stop()
+
                 } label: {}
                     .buttonStyle(PressableButtonStyle(normalImage: "KeepPlayingBtn", pressedImage: "KeepPlayingBtnPressed", width: 350))
                     .padding(.bottom, 30)
@@ -62,5 +66,14 @@ struct WinningPigsCountView: View {
         }
         .frame(maxWidth: geo.size.width, maxHeight: calculatePercent(dimensionValue: 1095, dimension: .height, geo: geo))
         .background(.white)
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.winningFeedback], fileExtension: .wav, volume: 1))
+            audioManager.setupAudios(from: .init(filename: [.victoryCounting], fileExtension: .m4a, volume: 1))
+            audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                audioManager.sounds.first(where: {$0.filename == .victoryCounting})?.player?.play()
+            }
+        }
+        
     }
 }

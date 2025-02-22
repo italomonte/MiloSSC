@@ -11,6 +11,12 @@ class CountingPigsViewModel: NSObject, ObservableObject {
     @Published var hasDrawnCorrect: Bool = true
     @Published var recognizedNumber: String = ""
     let numberOfpigs = 1
+    
+    @Published  var soundVolume = 1
+    @Published  var isPlayingSound = false
+    @Published  var isPlayingNarration = false
+    @Published  var timerImage: Timer?
+    @Published  var timerAudio: Timer?
 
     
     func classifyDrawing() {

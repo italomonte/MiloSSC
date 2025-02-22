@@ -21,7 +21,7 @@ struct CardAnimation {
 class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     
     let voiceSeconds = [9, 16, 13, 9, 7, 4, 15, 22, 22]
-    @Published var historyVoice: [AVAudioPlayer?] = []
+//    @Published var historyVoice: [AVAudioPlayer?] = []
     
     @Published var indexHistoryStep: Int = 0
     @Published var cardOneStep: Int = 0
@@ -33,7 +33,11 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     @Published var goToCallMinigames: Bool = false
     @Published var framesPerSecond: Int = 0
     
-    
+    @State  var soundVolume = 1
+    @State  var isPlayingSound = false
+    @State  var isPlayingNarration = false
+    @State  var timerImage: Timer?
+    @State  var timerAudio: Timer?
 
     
     private var historyBgMoments: [[String]] = [
@@ -100,37 +104,34 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
             }
 
         }
-    }
-    
-    func setupAudios() {
         
-        for i in 1..<10 {
-            if let soundURL = Bundle.main.url(forResource: "H" + String(i), withExtension: "m4a") {
-                do {
-                    let audio = try AVAudioPlayer(contentsOf: soundURL)
-                    audio.delegate = self
-                    audio.prepareToPlay()
-                    historyVoice.append(audio)
-                    
-                } catch {
-                    print("Erro ao carregar o áudio \("H" + String(i)): \(error.localizedDescription)")
-                }
-            }
-        }
     }
     
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        DispatchQueue.main.async {
-            NotificationCenter.default.post(name: .audioDidFinish, object: nil)
-        }
-    }
-    
+//    func setupAudios() {
+//        
+//        for i in 1..<10 {
+//            if let soundURL = Bundle.main.url(forResource: "H" + String(i), withExtension: "m4a") {
+//                do {
+//                    let audio = try AVAudioPlayer(contentsOf: soundURL)
+//                    audio.delegate = self
+//                    audio.prepareToPlay()
+//                    historyVoice.append(audio)
+//                    
+//                } catch {
+//                    print("Erro ao carregar o áudio \("H" + String(i)): \(error.localizedDescription)")
+//                }
+//            }
+//        }
+//    }
+//    
+//    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+//        DispatchQueue.main.async {
+//            NotificationCenter.default.post(name: .audioDidFinish, object: nil)
+//        }
+//    }
+//    
 
     
-}
-
-extension Notification.Name {
-    static let audioDidFinish = Notification.Name("audioDidFinish")
 }
 
 

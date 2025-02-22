@@ -84,16 +84,15 @@ struct InitialMenuView: View {
             }
         }
         .onAppear{
-            audioManager.sounds.first(where: {$0.filename == .soundtrack})?.player?.play()
+            audioManager.setupAudios(from: .init(filename: [.genericFeedback], fileExtension: .wav, volume: 1))
+            audioManager.setupAudios(from: .init(filename: [.soundtrack], fileExtension: .mp3, volume: 0.1))
             
-        }
-        .onAppear{
-            audioManager.setupAudio(from: .init(filename: .genericFeedback, fileExtension: .wav, volume: 1))
-            audioManager.setupAudio(from: .init(filename: .soundtrack, fileExtension: .mp3, volume: 0.5))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                audioManager.sounds.first(where: {$0.filename == .soundtrack})?.player?.play()
+            }
         }
     }
     
-
 }
 
 #Preview {

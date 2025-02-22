@@ -14,6 +14,7 @@ struct OrderNumbersVictoryView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
     @State var isSettingOpen = false
+    @EnvironmentObject var audioManager: AudioManager
 
     
     var body: some View {
@@ -38,6 +39,8 @@ struct OrderNumbersVictoryView: View {
 
                     Button {
                         dismiss()
+                        audioManager.sounds.first(where: {$0.filename == .victoryFluffies})?.player?.stop()
+
                     } label: {}
                         .buttonStyle(PressableButtonStyle(normalImage: "KeepPlayingBtn", pressedImage: "KeepPlayingBtnPressed", width: 350))
                         .padding(.top, 30)
@@ -59,7 +62,14 @@ struct OrderNumbersVictoryView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.winningFeedback], fileExtension: .wav, volume: 1))
+            audioManager.setupAudios(from: .init(filename: [.victoryFluffies], fileExtension: .m4a, volume: 1))
+            audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                audioManager.sounds.first(where: {$0.filename == .victoryFluffies})?.player?.play()
+            }
+        }
     }
     
 }

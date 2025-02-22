@@ -11,6 +11,7 @@ struct HistoryPassView: View {
     
     
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var audioManager: AudioManager
     
     @Environment(\.dismiss) var dismiss
     
@@ -18,10 +19,6 @@ struct HistoryPassView: View {
 
     @State var isSettingOpen = false
     @State var bgFramesPerSecond: Int = 1
-    
-    init() {
-        historyPassVm.setupAudios()
-    }
         
     var body: some View {
         GeometryReader { geo in
@@ -58,7 +55,6 @@ struct HistoryPassView: View {
                     }
                 }
                 
-                
                 // Text
                 VStack{
                     Spacer()
@@ -68,13 +64,18 @@ struct HistoryPassView: View {
                 
                 // UI Button Settings
                 UIButtons(buttons: [
-                    ("CloseBtn", {dismiss()}),
+                    ("CloseBtn", {dismiss()
+                        stopCurrentAudio()
+                    }),
                     ("SettingsBtn", {isSettingOpen = true})
                 ], geo: geo)
                 
             }
         }
-
+        .onAppear{
+            audioManager.setupAudios(from: .init(filename: [.h1, .h2, .h3, .h4, .h5, .h6, .h7, .h8, .h9], fileExtension: .m4a, volume: 1))
+        }
+        
         .onChange(of: historyPassVm.goToCallMinigames, { oldValue, newValue in
             if newValue {
                 coordinator.push(page: .CallToMinigames)
@@ -83,5 +84,14 @@ struct HistoryPassView: View {
         .navigationBarBackButtonHidden(true)
         
     }
+    
+    private func stopCurrentAudio() {
+        audioManager.sounds.first(where: { $0.filename.rawValue == "H\(historyPassVm.indexHistoryMoment + 1)" })?.player?.stop()
+        historyPassVm.timerAudio?.invalidate()
+        historyPassVm.timerAudio = nil
+        historyPassVm.isPlayingSound = false
+        historyPassVm.soundVolume = 1
+    }
+
 }
 
