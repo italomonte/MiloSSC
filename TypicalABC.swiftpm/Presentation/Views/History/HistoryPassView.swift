@@ -11,7 +11,6 @@ struct HistoryPassView: View {
     
     
     @EnvironmentObject var coordinator: Coordinator
-    @EnvironmentObject var audioMng: AudioManager
     
     @Environment(\.dismiss) var dismiss
     
@@ -75,9 +74,7 @@ struct HistoryPassView: View {
                 
             }
         }
-        .onAppear{
-            audioMng.top.toggle()
-        }
+
         .onChange(of: historyPassVm.goToCallMinigames, { oldValue, newValue in
             if newValue {
                 coordinator.push(page: .CallToMinigames)

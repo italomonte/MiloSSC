@@ -1,13 +1,15 @@
 import SwiftUI
-
+import AVFoundation
 
 
 struct InitialMenuView: View {
     
     @EnvironmentObject var coordinator: Coordinator
-    @EnvironmentObject var audioMng: AudioManager
+    @EnvironmentObject var audioManager: AudioManager
     
     @Environment(\.dismiss) var dismiss
+    
+//    @ObservedObject var initialMenuVm: InitialMenuViewModel = .init()
     
     @State private var images = ["InitialBg1", "InitialBg2"]
     @State private var indexMenuStep = 0
@@ -20,7 +22,7 @@ struct InitialMenuView: View {
               let font = CGFont(fontDataProvider) else {
             fatalError("Erro ao carregar a fonte")
         }
-
+        
         var error: Unmanaged<CFError>?
         if !CTFontManagerRegisterGraphicsFont(font, &error) {
             print("Erro ao registrar a fonte: \(error!.takeRetainedValue())")
@@ -28,6 +30,7 @@ struct InitialMenuView: View {
     }
     
     init() {
+        print("instanciado")
         registerCustomFont()
     }
     
@@ -54,11 +57,13 @@ struct InitialMenuView: View {
                     UIButtons(buttons: [
                         ("InfoBtn", {
                             coordinator.push(page: .InfoView)
-                            let audioBtn = audioMng.genericAudios.first(where: { $0.name == .GenericFeedback })
-                            audioBtn?.player?.play()
+                            audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                        }),
+                        ("SettingsBtn", {
+                            isSettingOpen = true
+                            audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
                             
                         }),
-                        ("SettingsBtn", {isSettingOpen = true}),
                     ], geo: geo)
                     .padding(.vertical)
                     
@@ -67,9 +72,9 @@ struct InitialMenuView: View {
                         Spacer()
                         
                         Button {
+                            audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
                             coordinator.push(page: .HistoryPassView)
-                            audioMng.setupHistoryVoices(index: 1)
-                            print(audioMng.historyVoice.count)
+                            
                         } label: {}
                             .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: calculatePercent(dimensionValue: 276, dimension: .width, geo: geo)))
                         
@@ -79,13 +84,50 @@ struct InitialMenuView: View {
             }
         }
         .onAppear{
-            audioMng.setupAudios()
-            print(audioMng.historyVoice)
+            audioManager.sounds.first(where: {$0.filename == .soundtrack})?.player?.play()
+            
+        }
+        .onAppear{
+            audioManager.setupAudio(from: .init(filename: .genericFeedback, fileExtension: .wav, volume: 1))
+            audioManager.setupAudio(from: .init(filename: .soundtrack, fileExtension: .mp3, volume: 0.5))
         }
     }
+    
+
 }
 
 #Preview {
     InitialMenu()
 }
-
+//
+//class InitialMenuViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
+//    
+//    @Published var sounds: [AVAudioPlayer?] = []
+//    
+//    func setupAudios(fileNames: [(String, String)]) {
+//        for name in fileNames {
+//            if let soundURL = Bundle.main.url(forResource: name.0, withExtension: name.1) {
+//                do {
+//                    let audio = try AVAudioPlayer(contentsOf: soundURL)
+//                    audio.delegate = self
+//                    audio.prepareToPlay()
+//                    audio.volume = 0.1
+//                    sounds.append(audio)
+//                    
+//                } catch {
+//                    print("Erro ao carregar o áudio \(name): \(error.localizedDescription)")
+//                }
+//            }
+//            
+//            print(sounds)
+//        }
+//        
+//        
+//    }
+//    
+//    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+//        DispatchQueue.main.async {
+//            NotificationCenter.default.post(name: .audioDidFinish, object: nil)
+//        }
+//    }
+//}

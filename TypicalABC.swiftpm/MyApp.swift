@@ -12,11 +12,11 @@ struct MyApp: App {
 
 struct InitialMenu: View {
     
-    @ObservedObject var coordinator: Coordinator = Coordinator()
+    @ObservedObject var coordinator: Coordinator = .init()
+    @ObservedObject var audioManager: AudioManager = .init()
     
     var body: some View {
-        CoordinatorView(coordinator: coordinator)
-//        ContentView()
+        CoordinatorView(coordinator: coordinator, audioManager: audioManager)
         
     }
 }

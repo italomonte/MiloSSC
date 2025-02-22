@@ -129,5 +129,9 @@ class HistoryPassViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
     
 }
 
+extension Notification.Name {
+    static let audioDidFinish = Notification.Name("audioDidFinish")
+}
+
 
 
