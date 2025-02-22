@@ -29,8 +29,6 @@ struct InitialMenuView: View {
     
     init() {
         registerCustomFont()
-        audioMng.setupGenericAudio(audioFilename: .GenericFeedback)
-        audioMng.setupHistoryVoices(index: 0)
     }
     
     var body: some View {
@@ -70,6 +68,8 @@ struct InitialMenuView: View {
                         
                         Button {
                             coordinator.push(page: .HistoryPassView)
+                            audioMng.setupHistoryVoices(index: 1)
+                            print(audioMng.historyVoice.count)
                         } label: {}
                             .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: calculatePercent(dimensionValue: 276, dimension: .width, geo: geo)))
                         
@@ -78,7 +78,10 @@ struct InitialMenuView: View {
                 }
             }
         }
-        
+        .onAppear{
+            audioMng.setupAudios()
+            print(audioMng.historyVoice)
+        }
     }
 }
 

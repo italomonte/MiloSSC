@@ -19,6 +19,10 @@ struct HistoryPassView: View {
 
     @State var isSettingOpen = false
     @State var bgFramesPerSecond: Int = 1
+    
+    init() {
+        historyPassVm.setupAudios()
+    }
         
     var body: some View {
         GeometryReader { geo in
@@ -70,6 +74,9 @@ struct HistoryPassView: View {
                 ], geo: geo)
                 
             }
+        }
+        .onAppear{
+            audioMng.top.toggle()
         }
         .onChange(of: historyPassVm.goToCallMinigames, { oldValue, newValue in
             if newValue {

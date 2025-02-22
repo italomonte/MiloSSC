@@ -3,6 +3,7 @@ import SwiftUI
 struct TextContainer: View {
     
     @ObservedObject var historyPassVm: HistoryPassViewModel
+
     let geo: GeometryProxy
     
     @State private var soundVolume = 1
@@ -15,7 +16,6 @@ struct TextContainer: View {
         isPlayingSound = true
         startImageLoop()
         
-        print(historyPassVm.indexHistoryMoment)
         let duration = historyPassVm.voiceSeconds[historyPassVm.indexHistoryMoment]
         
         timerAudio = Timer.scheduledTimer(withTimeInterval: TimeInterval(duration), repeats: false) { _ in
@@ -60,7 +60,7 @@ struct TextContainer: View {
                 Button {
                     historyPassVm.historyVoice[historyPassVm.indexHistoryMoment]?.stop()
                     stopAudioLoop()
-                    self.historyPassVm.handleHistoryMoment(movement: .previous)
+                    historyPassVm.handleHistoryMoment(movement: .previous)
                 } label: {}
                     .buttonStyle(PressableButtonStyle(normalImage: historyPassVm.indexHistoryMoment == 0 ? "PassLeftBtnDisabled" : "PassLeftBtn", pressedImage: historyPassVm.indexHistoryMoment == 0 ? "PassLeftBtnDisabled" : "PassLeftBtnPressed", width: geo.size.height * 0.06))
                 
