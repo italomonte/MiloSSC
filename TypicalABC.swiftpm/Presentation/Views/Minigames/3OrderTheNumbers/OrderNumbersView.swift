@@ -42,31 +42,31 @@ struct OrderNumbersView: View {
                         
                         soundButton
                         Text("Drag the fluffies into numerical order, from smallest to biggest. Colors and sizes can help you figure out the order.")
-                            .font(.patrickHandBigger)
+                            .font(.patrickHandPrompts)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.white)
                             .font(.largeTitle)
-                            .frame(maxWidth: 0.713 * geo.size.width)
+                            .frame(maxWidth: 0.730 * geo.size.width)
                         
                         HStack(alignment: .bottom) {
                             ForEach(orderNumbersVm.numbersCards, id: \.id) { item in
-                                CardBackView(geo: geo, widthPercent: 0.089, orderNumbersVm: orderNumbersVm, card: item)
+                                CardBackView(geo: geo, widthPercent: 0.082, orderNumbersVm: orderNumbersVm, card: item)
                             }
                         }
-                        .frame(maxWidth: 0.9472 * geo.size.width, maxHeight: 0.76 * geo.size.height)
+                        .frame(maxWidth: 0.9472 * geo.size.width, maxHeight: 0.72 * geo.size.height)
                     }
                     
                     
-                    HStack(alignment: .bottom, spacing: 0.009 * geo.size.width) {
+                    HStack(alignment: .bottom, spacing: 0.0105 * geo.size.width) {
                         ForEach(orderNumbersVm.numbersCards, id: \.id) { card in
-                            RowView(geo: geo, widthPercent: 0.086, item: card, isBeingDragged: draggedItem == card)
+                            RowView(geo: geo, widthPercent: 0.079, item: card, isBeingDragged: draggedItem == card)
                                 .offset(x: draggedItem == card ? offset : 0)
                                 .gesture(dragGesture(for: card)) // Detecta o arrastar
                             
                         }
                     }
-                    .frame(maxWidth: 0.9469 * geo.size.width, maxHeight: 0.76 * geo.size.height)
-                    .offset(x: 1, y: 29)
+                    .frame(maxWidth: 0.9400 * geo.size.width, maxHeight: 0.76 * geo.size.height)
+                    .offset(x: 0, y: 44)
                     
                     
                 }
