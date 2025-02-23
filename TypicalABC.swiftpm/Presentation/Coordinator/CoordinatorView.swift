@@ -44,6 +44,13 @@ struct CoordinatorView: View {
                     .environmentObject(audioManager)
                     .environmentObject(settingsManager)
             }
+            
+            if settingsManager.colorFilterEnable {
+                Color.filter.opacity(0.3)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(false)
+                
+            }
         }
     }
 }

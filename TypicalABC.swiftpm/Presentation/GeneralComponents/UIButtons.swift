@@ -22,7 +22,7 @@ struct UIButtons: View {
         VStack{
             HStack {
                 
-                if buttons.count > 1 {
+                if buttons.count >= 2 {
                     Button {
                         buttons[0].1()
                         
@@ -38,7 +38,7 @@ struct UIButtons: View {
                 
                 HStack{
                     Button {
-                        buttons[1].0 == "SettingsBtn" ? (settingsManager.showSettingsPopUp = true) : ()
+                        buttons[buttons.count > 1 ? 1 : 0].0 == "SettingsBtn" ? (settingsManager.showSettingsPopUp = true) : ()
                         print(settingsManager.showSettingsPopUp)
                         buttons[ buttons.count > 1 ? 1 : 0].1()
                         if settingsManager.soundEffectsEnable {
@@ -58,7 +58,6 @@ struct UIButtons: View {
                             if settingsManager.soundEffectsEnable {
                                 audioManager.sounds.first(where: { $0.filename == .genericFeedback})?.player?.play()
                             }
-                            
                         } label: {  }
                             .buttonStyle(PressableButtonStyle(normalImage: buttons[2].0, pressedImage: buttons[2].0 + "Pressed", width: widthButton))
                     }

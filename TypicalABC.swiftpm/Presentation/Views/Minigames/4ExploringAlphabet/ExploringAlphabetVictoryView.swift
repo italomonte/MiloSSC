@@ -12,8 +12,11 @@ import SwiftUI
 struct ExploringAlphabetVictoryView: View {
     
     @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var audioManager: AudioManager
+    @EnvironmentObject var settingsManager: SettingsManager
+
     
     @State var isSettingOpen = false
 
@@ -79,7 +82,9 @@ struct ExploringAlphabetVictoryView: View {
         .onAppear{
             audioManager.setupAudios(from: .init(filename: [.winningFeedback], fileExtension: .wav, volume: 1))
             audioManager.setupAudios(from: .init(filename: [.victoryAlphabet], fileExtension: .m4a, volume: 1))
-            audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            if settingsManager.soundEffectsEnable {
+                audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 audioManager.sounds.first(where: {$0.filename == .victoryAlphabet})?.player?.play()
             }

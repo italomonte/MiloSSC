@@ -33,4 +33,8 @@ extension Color {
     static var darkBrown: Color {
          Color(red: 35/255, green: 12/255, blue: 0/255)
     }
+    
+    static var filter: Color {
+         Color(red: 128/255, green: 128/255, blue: 128/255)
+    }
 }

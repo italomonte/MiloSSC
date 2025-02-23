@@ -91,7 +91,16 @@ struct InitialMenuView: View {
             audioManager.setupAudios(from: .init(filename: [.soundtrack], fileExtension: .mp3, volume: 0.1))
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if settingsManager.musicEnable {
+                    audioManager.sounds.first(where: {$0.filename == .soundtrack})?.player?.play()
+                }
+            }
+        }
+        .onChange(of: settingsManager.musicEnable) { _, newValue in
+            if newValue {
                 audioManager.sounds.first(where: {$0.filename == .soundtrack})?.player?.play()
+            } else {
+                audioManager.sounds.first(where: {$0.filename == .soundtrack})?.player?.stop()
             }
         }
     }

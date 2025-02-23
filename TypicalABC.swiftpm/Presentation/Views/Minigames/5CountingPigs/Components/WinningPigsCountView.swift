@@ -11,7 +11,8 @@ import PencilKit
 struct WinningPigsCountView: View {
     
     @EnvironmentObject var audioManager: AudioManager
-        
+    @EnvironmentObject var settingsManager: SettingsManager
+
     let geo: GeometryProxy
     
     @Binding var canvasView: PKCanvasView
@@ -70,7 +71,9 @@ struct WinningPigsCountView: View {
         .onAppear{
             audioManager.setupAudios(from: .init(filename: [.winningFeedback], fileExtension: .wav, volume: 1))
             audioManager.setupAudios(from: .init(filename: [.victoryCounting], fileExtension: .m4a, volume: 1))
-            audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            if settingsManager.soundEffectsEnable {
+                audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 audioManager.sounds.first(where: {$0.filename == .victoryCounting})?.player?.play()
             }

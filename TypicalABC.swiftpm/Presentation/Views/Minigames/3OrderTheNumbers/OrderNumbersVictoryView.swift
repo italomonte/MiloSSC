@@ -12,6 +12,7 @@ import SwiftUI
 struct OrderNumbersVictoryView: View {
     
     @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var audioManager: AudioManager
     @EnvironmentObject var settingsManager: SettingsManager
