@@ -73,7 +73,9 @@ struct InitialMenuView: View {
                         Spacer()
                         
                         Button {
-                            audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                            if settingsManager.soundEffectsEnable {
+                                audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                            }
                             coordinator.push(page: .HistoryPassView)
                             
                         } label: {}

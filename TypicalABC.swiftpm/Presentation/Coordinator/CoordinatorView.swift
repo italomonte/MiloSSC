@@ -40,7 +40,9 @@ struct CoordinatorView: View {
             .environmentObject(settingsManager)
             
             if settingsManager.showSettingsPopUp {
-                PopUpSettingsView(settingsManager: settingsManager, audioManager: audioManager)
+                PopUpSettingsView()
+                    .environmentObject(audioManager)
+                    .environmentObject(settingsManager)
             }
         }
     }

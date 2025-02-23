@@ -10,7 +10,8 @@ struct ExploringAlphabetView: View {
     
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var audioManager: AudioManager
-    
+    @EnvironmentObject var settingsManager: SettingsManager
+
     
     @State var isSettingOpen = false
     
@@ -71,7 +72,9 @@ struct ExploringAlphabetView: View {
                         VStack{
                             HStack{
                                 Button {canvasPencilView.drawing = PKDrawing()
-                                    audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                                    if settingsManager.soundEffectsEnable {
+                                        audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                                    }
 
                                 }
                                 label: { }
@@ -86,7 +89,10 @@ struct ExploringAlphabetView: View {
                                             coordinator.push(page: .ExploringTheAlphabetVictoryView)
                                         }
                                     }
-                                    audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                                    // AQUI2
+                                    if settingsManager.soundEffectsEnable {
+                                        audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                                    }
 
                                 }
                                 label: { }

@@ -12,6 +12,7 @@ struct CallToMinigamesView: View {
 
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var audioManager: AudioManager
+    @EnvironmentObject var settingsManager: SettingsManager
     
     var body: some View {
         GeometryReader { geo in
@@ -48,7 +49,9 @@ struct CallToMinigamesView: View {
                         
                         Button {
                             coordinator.push(page: .MinigamesMenuView)
-                            audioManager.sounds.first(where: { $0.filename == .genericFeedback})?.player?.play()
+                            if settingsManager.soundEffectsEnable {
+                                audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+                            }
 
                         } label: {}
                             .buttonStyle(PressableButtonStyle(normalImage: "PlayBtn", pressedImage: "PlayBtnPressed", width: 150))

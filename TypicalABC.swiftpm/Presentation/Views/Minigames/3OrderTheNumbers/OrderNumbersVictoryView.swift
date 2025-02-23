@@ -13,8 +13,10 @@ struct OrderNumbersVictoryView: View {
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var coordinator: Coordinator
-    @State var isSettingOpen = false
     @EnvironmentObject var audioManager: AudioManager
+    @EnvironmentObject var settingsManager: SettingsManager
+
+    @State var isSettingOpen = false
 
     
     var body: some View {
@@ -65,9 +67,15 @@ struct OrderNumbersVictoryView: View {
         .onAppear{
             audioManager.setupAudios(from: .init(filename: [.winningFeedback], fileExtension: .wav, volume: 1))
             audioManager.setupAudios(from: .init(filename: [.victoryFluffies], fileExtension: .m4a, volume: 1))
-            audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            
+            if settingsManager.soundEffectsEnable {
+                audioManager.sounds.first(where: {$0.filename == .winningFeedback})?.player?.play()
+            }
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 audioManager.sounds.first(where: {$0.filename == .victoryFluffies})?.player?.play()
+                
+                
             }
         }
     }

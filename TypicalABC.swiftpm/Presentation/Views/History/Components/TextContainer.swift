@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TextContainer: View {
     @EnvironmentObject var audioManager: AudioManager
+    @EnvironmentObject var settingsManager: SettingsManager
     
     @ObservedObject var historyPassVm: HistoryPassViewModel
     
@@ -42,7 +43,9 @@ struct TextContainer: View {
         Button {
             stopCurrentAudio()
             historyPassVm.handleHistoryMoment(movement: .previous)
-            audioManager.sounds.first(where: { $0.filename == .genericFeedback})?.player?.play()
+            if settingsManager.soundEffectsEnable {
+                audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+            }
 
         } label: {}
         .buttonStyle(PressableButtonStyle(
@@ -56,8 +59,9 @@ struct TextContainer: View {
         Button {
             stopCurrentAudio()
             historyPassVm.handleHistoryMoment(movement: .next)
-            audioManager.sounds.first(where: { $0.filename == .genericFeedback})?.player?.play()
-
+            if settingsManager.soundEffectsEnable {
+                audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
+            }
         } label: {}
         .buttonStyle(PressableButtonStyle(
             normalImage: "PassRightBtn",
