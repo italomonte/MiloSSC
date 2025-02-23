@@ -8,19 +8,19 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "TypicalABC",
+    name: "ABCTypical",
     platforms: [
         .iOS("17.5")
     ],
     products: [
         .iOSApplication(
-            name: "TypicalABC",
+            name: "ABCTypical",
             targets: ["AppModule"],
             bundleIdentifier: "emao.idserve.net.ssc.milo",
             teamIdentifier: "4XY84J5345",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .openBook),
+            appIcon: .asset("AppIcon"),
             accentColor: .presetColor(.mint),
             supportedDeviceFamilies: [
                 .pad,

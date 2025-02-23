@@ -4,10 +4,12 @@ import AVFoundation
 
 struct InitialMenuView: View {
     
+    @Environment(\.dismiss) var dismiss
+    
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var audioManager: AudioManager
+    @EnvironmentObject var settingsManager: SettingsManager
     
-    @Environment(\.dismiss) var dismiss
     
 //    @ObservedObject var initialMenuVm: InitialMenuViewModel = .init()
     
@@ -60,7 +62,7 @@ struct InitialMenuView: View {
                             audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
                         }),
                         ("SettingsBtn", {
-                            isSettingOpen = true
+                            settingsManager.isShowingSettingsManager = true
                             audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
                             
                         }),
@@ -95,9 +97,9 @@ struct InitialMenuView: View {
     
 }
 
-#Preview {
-    InitialMenu()
-}
+//#Preview {
+//    InitialMenu()
+//}
 //
 //class InitialMenuViewModel: NSObject, ObservableObject, AVAudioPlayerDelegate {
 //    
