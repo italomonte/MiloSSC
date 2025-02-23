@@ -14,10 +14,12 @@ struct CoordinatorView: View {
 
     @ObservedObject var coordinator: Coordinator
     @ObservedObject var audioManager: AudioManager
+    @ObservedObject var settingsManager: SettingsManager
 
-    init(coordinator: Coordinator, audioManager: AudioManager) {
+    init(coordinator: Coordinator, audioManager: AudioManager, settingsManager: SettingsManager) {
         self.coordinator = coordinator
         self.audioManager = audioManager
+        self.settingsManager = settingsManager
     }
 
     
@@ -26,13 +28,29 @@ struct CoordinatorView: View {
             get: {coordinator.path},
             set: {coordinator.path = $0}
         )){
-            coordinator.build(page: .MinigamesMenuView)
-                .navigationDestination(for: AppPages.self) { page in
-                    coordinator.build(page: page)
-                }
+            ZStack{
+                coordinator.build(page: .InitialMenuView)
+                    .navigationDestination(for: AppPages.self) { page in
+                        coordinator.build(page: page)
+                    }
                 
+                if settingsManager.showSettingsPopUp {
+                    ZStack{
+                        Color.black.opacity(0.55)
+                            .ignoresSafeArea()
+                        
+                        ZStack{
+                            Image("popUpBg")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: (794 / 1620) * UIScreen.main.bounds.width)
+                        }
+                    }
+                }
+            }
         }
         .environmentObject(coordinator)
         .environmentObject(audioManager)
+        .environmentObject(settingsManager)
     }
 }

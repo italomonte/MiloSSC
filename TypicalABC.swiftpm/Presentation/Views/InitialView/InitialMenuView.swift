@@ -6,6 +6,7 @@ struct InitialMenuView: View {
     
     @EnvironmentObject var coordinator: Coordinator
     @EnvironmentObject var audioManager: AudioManager
+    @EnvironmentObject var settingsManager: SettingsManager
     
     @Environment(\.dismiss) var dismiss
     
@@ -60,7 +61,7 @@ struct InitialMenuView: View {
                             audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
                         }),
                         ("SettingsBtn", {
-                            isSettingOpen = true
+                            settingsManager.showSettingsPopUp = true
                             audioManager.sounds.first(where: {$0.filename == .genericFeedback})?.player?.play()
                             
                         }),
