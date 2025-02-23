@@ -24,33 +24,25 @@ struct CoordinatorView: View {
 
     
     var body: some View {
-        NavigationStack(path: Binding(
-            get: {coordinator.path},
-            set: {coordinator.path = $0}
-        )){
-            ZStack{
+        ZStack{
+            NavigationStack(path: Binding(
+                get: {coordinator.path},
+                set: {coordinator.path = $0}
+            )){
                 coordinator.build(page: .InitialMenuView)
                     .navigationDestination(for: AppPages.self) { page in
                         coordinator.build(page: page)
                     }
                 
-                if settingsManager.showSettingsPopUp {
-                    ZStack{
-                        Color.black.opacity(0.55)
-                            .ignoresSafeArea()
-                        
-                        ZStack{
-                            Image("popUpBg")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: (794 / 1620) * UIScreen.main.bounds.width)
-                        }
-                    }
-                }
+            }
+            .environmentObject(coordinator)
+            .environmentObject(audioManager)
+            .environmentObject(settingsManager)
+            
+            if settingsManager.showSettingsPopUp {
+                PopUpSettingsView(settingsManager: settingsManager, audioManager: audioManager)
             }
         }
-        .environmentObject(coordinator)
-        .environmentObject(audioManager)
-        .environmentObject(settingsManager)
     }
 }
+
