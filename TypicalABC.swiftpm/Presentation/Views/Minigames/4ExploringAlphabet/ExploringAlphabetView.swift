@@ -116,7 +116,7 @@ struct ExploringAlphabetView: View {
                     }
                     
                 }
-                .offset(y: calculatePercent(dimensionValue: -50, dimension: .height, geo: geo))
+                .offset(y: calculatePercent(dimensionValue: 0 , dimension: .height, geo: geo))
                 
                 // Scroll Alphabet
                 VStack{
@@ -128,10 +128,11 @@ struct ExploringAlphabetView: View {
                             .foregroundStyle(.white)
                             .frame(width: calculatePercent(dimensionValue: 1543, dimension: .width, geo: geo))
                     }
+                    .padding(.top)
                     
                     Spacer()
                     ScrollView(.horizontal){
-                        HStack(spacing: -1) {
+                        HStack(alignment:.bottom, spacing: -1) {
                             ForEach(alphabetVm.alphabet) { letter in
                                 LetterCard(letter: letter, geo: geo, letterSelected: $letterSelected)
                                     .onTapGesture {

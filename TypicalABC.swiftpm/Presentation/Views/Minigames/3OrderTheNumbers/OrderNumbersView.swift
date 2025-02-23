@@ -57,7 +57,7 @@ struct OrderNumbersView: View {
                     }
                     
                     
-                    HStack(alignment: .bottom, spacing: 0.0105 * geo.size.width) {
+                    HStack(alignment: .bottom, spacing: 0.0104 * geo.size.width) {
                         ForEach(orderNumbersVm.numbersCards, id: \.id) { card in
                             RowView(geo: geo, widthPercent: 0.079, item: card, isBeingDragged: draggedItem == card)
                                 .offset(x: draggedItem == card ? offset : 0)

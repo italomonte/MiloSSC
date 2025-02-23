@@ -10,10 +10,11 @@ import PencilKit
 
 struct DrawingPigsCountView: View {
     
+    @EnvironmentObject var audioManager: AudioManager
+    
     let geo: GeometryProxy
     @ObservedObject var countingPigsVm: CountingPigsViewModel
     @Binding var isMinimizeModal: Bool
-    @EnvironmentObject var audioManager: AudioManager
 
     var body: some View {
         ZStack {
@@ -46,8 +47,8 @@ struct DrawingPigsCountView: View {
                             }
                     )
                 
-                soundButton
-                
+                SoundButton(widthPercent: 0.5, countingPigsVm: countingPigsVm)
+                                    
                 Text("How many pigs do you see?")
                     .font(.patrickHandBigger)
                     .foregroundStyle(Color.lightBlue)
@@ -76,21 +77,30 @@ struct DrawingPigsCountView: View {
             }
 
         }
-        .frame(maxWidth: geo.size.width, maxHeight: calculatePercent(dimensionValue: 739, dimension: .height, geo: geo))
+        .frame(maxWidth: geo.size.width, minHeight: calculatePercent(dimensionValue: 739, dimension: .height, geo: geo))
         .background(.white)
 
     }
+
+}
+
+
+struct SoundButton: View {
     
+    @EnvironmentObject var audioManager: AudioManager
+    let widthPercent: CGFloat
+
+    @ObservedObject var countingPigsVm: CountingPigsViewModel
     
-    private var soundButton: some View {
-        Image(countingPigsVm.isPlayingSound ? "soundBtn\(countingPigsVm.soundVolume)" : "soundBtn2")
+    var body: some View{
+        Image("soundBtnBlue")
             .resizable()
             .scaledToFit()
-            .frame(width: UIScreen.main.bounds.width * 0.05)
-            .onTapGesture { toggleSound() }
+             .onTapGesture { toggleSound() }
+             .frame(width: UIScreen.main.bounds.width * 0.05)
     }
     
-    private func toggleSound() {
+    func toggleSound() {
         if countingPigsVm.isPlayingSound {
             stopCurrentAudio()
         } else {
@@ -137,5 +147,4 @@ struct DrawingPigsCountView: View {
         countingPigsVm.timerImage = nil
         countingPigsVm.soundVolume = 1
     }
-    
 }

@@ -66,21 +66,3 @@ struct CountingPigsView: View {
 
     
 }
-
-
-//extension PKCanvasView {
-//
-//    public func imageWithWhiteBackground(from rect: CGRect, scale: CGFloat = 1) -> UIImage {
-//        let renderer = UIGraphicsImageRenderer(size: rect.size)
-//
-//        return renderer.image { context in
-//            let cgContext = context.cgContext
-//
-//            UIColor.black.setFill()
-//            cgContext.fill(rect)
-//
-//            let drawingImage = self.drawing.image(from: rect, scale: scale)
-//            drawingImage.draw(in: rect)
-//        }
-//    }
-//}

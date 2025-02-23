@@ -56,6 +56,7 @@ struct WinningPigsCountView: View {
                     withAnimation {
                         hasDrawn = false
                     }
+                    canvasView.drawing = .init()
                     audioManager.sounds.first(where: {$0.filename == .victoryCounting})?.player?.stop()
 
                 } label: {}
