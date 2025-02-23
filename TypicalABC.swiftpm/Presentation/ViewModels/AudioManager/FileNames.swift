@@ -1,10 +1,3 @@
-//
-//  Filenames.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 22/02/25.
-//
-
 enum FileNames: String {
     case genericFeedback = "GenericFeedback"
     case h1 = "H1"

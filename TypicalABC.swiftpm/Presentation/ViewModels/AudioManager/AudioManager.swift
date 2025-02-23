@@ -1,10 +1,3 @@
-//
-//  AudioManager.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 22/02/25.
-//
-
 import AVFoundation
 
 class AudioManager: NSObject, ObservableObject, AVAudioPlayerDelegate {

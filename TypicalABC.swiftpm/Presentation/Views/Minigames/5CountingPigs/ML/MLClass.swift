@@ -1,10 +1,3 @@
-//
-//  MLClass.swift
-//  Meu App
-//
-//  Created by Atos Brito Omena on 31/01/25.
-//
-
 import CoreML
 import UIKit
 

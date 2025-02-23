@@ -1,9 +1,3 @@
-//
-//  OrderTheNumbersViewModel.swift
-//  TypicalSSC
-//
-//  Created by Italo Guilherme Monte on 09/02/25.
-//
 
 import SwiftUI
 

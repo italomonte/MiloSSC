@@ -1,12 +1,3 @@
-//
-//  Template.swift
-//  TypicalSSC
-//
-//  Created by Italo Guilherme Monte on 10/02/25.
-//
-
-
-
 import SwiftUI
 
 struct OrderNumbersVictoryView: View {

@@ -1,10 +1,3 @@
-//
-//  popUpSettings.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 23/02/25.
-//
-
 import SwiftUI
 
 struct PopUpSettingsView: View {

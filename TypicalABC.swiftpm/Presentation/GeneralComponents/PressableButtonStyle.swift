@@ -1,9 +1,3 @@
-//
-//  SwiftUIView.swift
-//  TypicalSSC
-//
-//  Created by Italo Guilherme Monte on 08/02/25.
-//
 
 import SwiftUI
 

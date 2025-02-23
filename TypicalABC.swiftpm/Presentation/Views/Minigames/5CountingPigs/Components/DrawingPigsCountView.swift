@@ -1,10 +1,3 @@
-//
-//  DrawingPigsCountView.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 20/02/25.
-//
-
 import SwiftUI
 import PencilKit
 

@@ -1,10 +1,3 @@
-//
-//  LetterCard.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 17/02/25.
-//
-
 import SwiftUI
 
 struct LetterCard: View {

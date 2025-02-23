@@ -18,6 +18,5 @@ struct InitialMenu: View {
     
     var body: some View {
         CoordinatorView(coordinator: coordinator, audioManager: audioManager, settingsManager: settingsManager)
-        
     }
 }

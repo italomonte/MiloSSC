@@ -1,9 +1,3 @@
-//
-//  HistoryPassViewModel.swift
-//  TypicalABC
-//
-//  Created by Italo Guilherme Monte on 12/02/25.
-//
 
 import SwiftUI
 import AVFoundation

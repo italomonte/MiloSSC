@@ -1,9 +1,3 @@
-//
-//  calculateP.swift
-//  SSC
-//
-//  Created by Italo Guilherme Monte on 29/01/25.
-//
 
 import Foundation
 import SwiftUI

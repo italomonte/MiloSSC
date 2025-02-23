@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  TypicalSSC
-//
-//  Created by Italo Guilherme Monte on 09/02/25.
-//
-
 import SwiftUI
 
 struct CardBackView: View {

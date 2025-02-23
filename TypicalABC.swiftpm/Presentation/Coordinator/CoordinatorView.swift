@@ -1,10 +1,3 @@
-//
-//  CoordinatorView.swift
-//  Stommy
-//
-//  Created by Italo Guilherme Monte on 10/12/24.
-//
-
 import SwiftUI
 import SwiftData
 import PencilKit
